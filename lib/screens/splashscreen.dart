@@ -33,6 +33,16 @@ class SplashScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+
+              Image(
+                image: AssetImage(
+                    'images/logo.png',
+                ),
+                width: 100,
+              ),
+              SizedBox(
+                height: 25,
+              ),
               Text(
                 'HUNGRYYY',
                 style: TextStyle(
@@ -41,15 +51,6 @@ class SplashScreen extends StatelessWidget {
                   color: kColorBlack,
                   fontSize: 36,
                 ),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Image(
-                image: AssetImage(
-                    'images/logo.png',
-                ),
-                width: 100,
               ),
             ],
           ),
