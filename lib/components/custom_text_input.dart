@@ -6,7 +6,8 @@ class CustomTextInput extends StatelessWidget {
   final String label,hint;
   final IconData icon;
   final bool isPasswordField;
-  CustomTextInput({@required this.label,@required this.icon,@required this.hint,@required this.isPasswordField});
+  final TextInputType textInputType;
+  CustomTextInput({@required this.label,@required this.icon,@required this.hint,@required this.isPasswordField,@required this.textInputType});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class CustomTextInput extends StatelessWidget {
           ),
         ),
         TextField(
+          keyboardType: textInputType,
           obscureText: isPasswordField,
           decoration: InputDecoration(
             hintText: hint,

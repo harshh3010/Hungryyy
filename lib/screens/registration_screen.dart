@@ -1,19 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
 import 'package:hungryyy/components/hungryyy_logo.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegistrationScreen extends StatefulWidget {
 
-  static final String id = 'login_screen';
-
+  static final String id = 'registration_screen';
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,9 +36,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         CustomTextInput(
+                          label: 'Name',
+                          hint: 'Your Name',
+                          icon: Icons.person_outline,
+                          isPasswordField: false,
+                          textInputType: TextInputType.text,
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        CustomTextInput(
                           label: 'Email',
                           hint: 'Your Email',
-                          icon: Icons.person_outline,
+                          icon: Icons.email,
                           isPasswordField: false,
                           textInputType: TextInputType.emailAddress,
                         ),
@@ -53,17 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hint: 'Your Password',
                           icon: Icons.lock_outline,
                           isPasswordField: true,
-                          textInputType: TextInputType.number,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            fontFamily: 'GT Eesti',
-                            color: Colors.grey.shade400,
-                          ),
+                          textInputType: TextInputType.text,
                         ),
                         SizedBox(
                           height: 60,
@@ -75,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: EdgeInsets.all(25),
                           color: kColorYellow,
                           child: Text(
-                            'Log In  >',
+                            'Sign Up  >',
                             style: TextStyle(
                               fontFamily: 'GT Eesti',
                               fontWeight: FontWeight.bold,
@@ -90,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              'Don\'t have an account?',
+                              'Already have an account?',
                               style: TextStyle(
                                 fontFamily: 'GT Eesti',
                                 fontWeight: FontWeight.w500,
@@ -105,12 +102,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 //TODO: CODE
                               },
                               child: Text(
-                                'Sign Up',
+                                'Sign In',
                                 style: TextStyle(
-                                  fontFamily: 'GT Eesti',
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  color: kColorRed
+                                    fontFamily: 'GT Eesti',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: kColorRed
                                 ),
                               ),
                             ),
