@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/screens/login_screen.dart';
 import 'package:hungryyy/screens/splashscreen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
@@ -10,12 +11,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        primaryColor: kColorYellow,
         accentColor: kColorRed,
       ),
-      initialRoute: SplashScreen.id,
+      initialRoute: LoginScreen.id,
       routes: {
         SplashScreen.id : (context) => SplashScreen(),
+        LoginScreen.id : (context) => LoginScreen(),
       },
     );
   }
