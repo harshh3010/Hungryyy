@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
 import 'package:hungryyy/components/hungryyy_logo.dart';
+import 'package:hungryyy/screens/registration_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -102,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             GestureDetector(
                               onTap: (){
-                                //TODO: CODE
+                                Navigator.pushReplacementNamed(context,RegistrationScreen.id);
                               },
                               child: Text(
                                 'Sign Up',

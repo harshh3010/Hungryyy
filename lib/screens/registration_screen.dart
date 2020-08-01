@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
 import 'package:hungryyy/components/hungryyy_logo.dart';
+import 'package:hungryyy/screens/login_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 HungryyyLogo(),
                 SizedBox(
-                  height: 60,
+                  height: 40,
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 30,vertical: 0),
@@ -51,6 +52,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           icon: Icons.email,
                           isPasswordField: false,
                           textInputType: TextInputType.emailAddress,
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        CustomTextInput(
+                          label: 'Contact',
+                          hint: 'Your Contact Number',
+                          icon: Icons.phone,
+                          isPasswordField: false,
+                          textInputType: TextInputType.phone,
                         ),
                         SizedBox(
                           height: 25,
@@ -99,7 +110,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             GestureDetector(
                               onTap: (){
-                                //TODO: CODE
+                                Navigator.pushReplacementNamed(context, LoginScreen.id);
                               },
                               child: Text(
                                 'Sign In',
