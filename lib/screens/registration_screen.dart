@@ -37,19 +37,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         CustomTextInput(
-                          label: 'Name',
-                          hint: 'Your Name',
-                          icon: Icons.person_outline,
-                          isPasswordField: false,
-                          textInputType: TextInputType.text,
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        CustomTextInput(
                           label: 'Email',
                           hint: 'Your Email',
-                          icon: Icons.email,
+                          icon: Icons.person_outline,
                           isPasswordField: false,
                           textInputType: TextInputType.emailAddress,
                         ),
@@ -57,18 +47,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           height: 25,
                         ),
                         CustomTextInput(
-                          label: 'Contact',
-                          hint: 'Your Contact Number',
-                          icon: Icons.phone,
-                          isPasswordField: false,
-                          textInputType: TextInputType.phone,
+                          label: 'Create Password',
+                          hint: 'Create a Password',
+                          icon: Icons.lock_outline,
+                          isPasswordField: true,
+                          textInputType: TextInputType.text,
                         ),
                         SizedBox(
                           height: 25,
                         ),
                         CustomTextInput(
-                          label: 'Password',
-                          hint: 'Your Password',
+                          label: 'Confirm Password',
+                          hint: 'Confirm your Password',
                           icon: Icons.lock_outline,
                           isPasswordField: true,
                           textInputType: TextInputType.text,
