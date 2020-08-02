@@ -15,6 +15,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  TextEditingController email = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         CustomTextInput(
+                          controller: email,
                           label: 'Email',
                           hint: 'Your Email',
                           icon: Icons.person_outline,
@@ -50,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 25,
                         ),
                         CustomTextInput(
+                          controller: password,
                           label: 'Password',
                           hint: 'Your Password',
                           icon: Icons.lock_outline,

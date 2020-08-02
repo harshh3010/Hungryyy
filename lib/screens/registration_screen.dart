@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
 import 'package:hungryyy/components/hungryyy_logo.dart';
 import 'package:hungryyy/screens/login_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
+import 'package:http/http.dart' as http;
 
 class RegistrationScreen extends StatefulWidget {
 
@@ -12,6 +15,32 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+
+  TextEditingController email = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+  TextEditingController cnfPassword = new TextEditingController();
+
+  Future<void> registerUser() async {
+    final http.Response response = await http.post(kRegisterUrl, body: {
+      "email": email.text,
+      "password":password.text,
+    });
+    print(response.statusCode);
+    if(response.statusCode == 200){
+      var data = jsonDecode(response.body.toString());
+      if(data.toString() == "User exists"){
+        AlertBox.showErrorBox(context, 'This email is already in use.');
+      }else if(data.toString() == "User registered"){
+        // TODO:AFTER SUCCESS
+      }
+    }else{
+      print(response.statusCode);
+      print('Error connecting to the server');
+      AlertBox.showErrorBox(context, 'Error establishing connection with the server.');
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -37,6 +66,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         CustomTextInput(
+                          controller: email,
                           label: 'Email',
                           hint: 'Your Email',
                           icon: Icons.person_outline,
@@ -47,6 +77,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           height: 25,
                         ),
                         CustomTextInput(
+                          controller: password,
                           label: 'Create Password',
                           hint: 'Create a Password',
                           icon: Icons.lock_outline,
@@ -57,6 +88,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           height: 25,
                         ),
                         CustomTextInput(
+                          controller: cnfPassword,
                           label: 'Confirm Password',
                           hint: 'Confirm your Password',
                           icon: Icons.lock_outline,
@@ -67,8 +99,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           height: 60,
                         ),
                         MaterialButton(
-                          onPressed: (){
-                            //TODO:CODE
+                          onPressed: () async {
+                            if(password.text != null && email.text != null){
+                              if(cnfPassword.text == password.text){
+                                await registerUser();
+                              }else{
+                                AlertBox.showErrorBox(context, 'The confirmation password did not match with the chosen one.');
+                              }
+                            }else{
+                              AlertBox.showErrorBox(context, 'Please fill up all the fields.');
+                            }
                           },
                           padding: EdgeInsets.all(25),
                           color: kColorYellow,
