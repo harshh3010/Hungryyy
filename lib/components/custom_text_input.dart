@@ -51,6 +51,7 @@ class CustomTextInput extends StatelessWidget {
               ),
             ),
           ),
+          cursorColor: kColorRed,
         ),
       ],
     );
