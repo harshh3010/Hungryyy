@@ -5,4 +5,6 @@ const Color kColorRed = Color(0xffff403b);
 const Color kColorBlack = Color(0xff000000);
 const Color kColorGrey = Color(0xff8d8d8d);
 
-const String kRegisterUrl = "http://192.168.225.195/hungryyy-app/registration.php";
+const kHostUrl = 'http://192.168.225.186/hungryyy-app';
+const String kRegisterUrl = "$kHostUrl/registration.php";
+const String kLoginUrl = "$kHostUrl/login_user.php";
