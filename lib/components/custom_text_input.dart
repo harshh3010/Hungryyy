@@ -7,7 +7,8 @@ class CustomTextInput extends StatelessWidget {
   final IconData icon;
   final bool isPasswordField;
   final TextInputType textInputType;
-  CustomTextInput({@required this.label,@required this.icon,@required this.hint,@required this.isPasswordField,@required this.textInputType});
+  final TextEditingController controller;
+  CustomTextInput({@required this.label,@required this.icon,@required this.hint,@required this.isPasswordField,@required this.textInputType,@required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class CustomTextInput extends StatelessWidget {
           ),
         ),
         TextField(
+          controller: controller,
           keyboardType: textInputType,
           obscureText: isPasswordField,
           decoration: InputDecoration(
@@ -49,6 +51,7 @@ class CustomTextInput extends StatelessWidget {
               ),
             ),
           ),
+          cursorColor: kColorRed,
         ),
       ],
     );
