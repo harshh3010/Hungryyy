@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hungryyy/screens/details_screen.dart';
+import 'package:hungryyy/screens/home_screen.dart';
 import 'package:hungryyy/screens/login_screen.dart';
 import 'package:hungryyy/screens/registration_screen.dart';
 import 'package:hungryyy/screens/splashscreen.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.id : (context) => LoginScreen(),
         RegistrationScreen.id : (context) => RegistrationScreen(),
         DetailsScreen.id : (context) => DetailsScreen(),
+        HomeScreen.id : (context) => HomeScreen(),
       },
     );
   }

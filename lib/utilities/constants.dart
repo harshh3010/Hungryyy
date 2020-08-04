@@ -8,3 +8,4 @@ const Color kColorGrey = Color(0xff8d8d8d);
 const kHostUrl = 'http://192.168.225.195/hungryyy-app';
 const String kRegisterUrl = "$kHostUrl/registration.php";
 const String kLoginUrl = "$kHostUrl/login_user.php";
+const String kSaveDetailsUrl = "$kHostUrl/save_user_details.php";
