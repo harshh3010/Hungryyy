@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/category_card.dart';
+import 'package:hungryyy/components/most_popular_card.dart';
 import 'package:hungryyy/components/restaurant_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/components/showcase_card.dart';
@@ -193,6 +194,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 15,
+              ),
+              ShowcaseCard(
+                label: 'Most Popular',
+                viewAll: (){
+                  //TODO:CODE
+                },
+                child: MostPopularCard(
+                  name: 'Blue Lagoon',
+                  restaurantName: 'Dew Drops',
+                  rating: 5,
+                  image: AssetImage('images/dish.jpg'),
+                  distance: 1.5,
+                  deliveryCharge: 0,
+                ),
+              ),
             ],
           ),
         ),
@@ -200,4 +218,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

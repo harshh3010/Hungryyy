@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
-class RestaurantCard extends StatelessWidget {
+class MostPopularCard extends StatelessWidget {
 
-  final String name;
+  final String name,restaurantName;
   final double distance,deliveryCharge,rating;
   final ImageProvider image;
-  RestaurantCard({@required this.name,@required this.distance,@required this.deliveryCharge,@required this.rating,@required this.image});
+  MostPopularCard({@required this.name,@required this.restaurantName,@required this.distance,@required this.deliveryCharge,@required this.rating,@required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,10 @@ class RestaurantCard extends StatelessWidget {
     }
 
     return Container(
-      width: 170,
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(horizontal: 30,vertical: 20),
+      width: double.infinity,
+      height: 230,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -35,11 +36,10 @@ class RestaurantCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
             child: Container(
-              width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: image,
@@ -56,8 +56,40 @@ class RestaurantCard extends StatelessWidget {
             name,
             style: TextStyle(
               fontFamily: 'GT Eesti',
-              fontSize: 18,
+              fontSize: 20,
             ),
+          ),
+          Wrap(
+            direction: Axis.horizontal,
+            alignment: WrapAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                restaurantName,
+                style: TextStyle(
+                  fontFamily: 'GT Eesti',
+                  fontSize: 16,
+                  color: Colors.grey.shade500,
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    '⭐ ',
+                    style: TextStyle(
+                      fontSize: 10,
+                    ),
+                  ),
+                  Text(
+                    '$rating',
+                    style: TextStyle(
+                        fontFamily: 'GT Eesti',
+                        fontSize: 12
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
           SizedBox(
             height: 5,
@@ -106,24 +138,6 @@ class RestaurantCard extends StatelessWidget {
           ),
           SizedBox(
             height: 5,
-          ),
-          Wrap(
-            direction: Axis.horizontal,
-            children: <Widget>[
-              Text(
-                '⭐ ',
-                style: TextStyle(
-                  fontSize: 10,
-                ),
-              ),
-              Text(
-                '$rating',
-                style: TextStyle(
-                    fontFamily: 'GT Eesti',
-                    fontSize: 12
-                ),
-              ),
-            ],
           ),
         ],
       ),
