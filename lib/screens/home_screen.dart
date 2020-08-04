@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/components/search_box.dart';
+import 'package:hungryyy/utilities/constants.dart';
 
 class HomeScreen extends StatefulWidget {
-
   static final String id = 'home_screen';
 
   @override
@@ -11,8 +12,108 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+              child: IconButton(
+                onPressed: () {
+                  //TODO:CODE
+                },
+                padding: EdgeInsets.all(10),
+                icon: Icon(
+                  Icons.restaurant_menu,
+                  color: kColorBlack,
+                ),
+              ),
+            ),
+            centerTitle: false,
+            title: Padding(
+              padding: const EdgeInsets.only(top: 27),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Deliver To',
+                    style: TextStyle(
+                      fontFamily: 'GT Eesti',
+                      color: kColorBlack,
+                      fontSize: 10,
+                    ),
+                  ),
+                  Text(
+                    'Bhopal, India  >',
+                    style: TextStyle(
+                      fontFamily: 'GT Eesti',
+                      color: Colors.grey.shade500,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
+                child: IconButton(
+                  onPressed: () {
+                    //TODO:CODE
+                  },
+                  padding: EdgeInsets.all(10),
+                  icon: Icon(
+                    Icons.person_outline,
+                    color: kColorBlack,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
+                child: Text(
+                  'Find any Restaurant In',
+                  style: kHeadingStyle,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(30, 5, 30, 0),
+                child: Text(
+                  'Your City 😉',
+                  style: kHeadingStyle,
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+                child: SearchBox(
+                  hint: 'Search Food',
+                  onChanged: (value){
+                    //TODO:CODE
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
