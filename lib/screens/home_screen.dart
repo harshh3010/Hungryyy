@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/components/category_card.dart';
 import 'package:hungryyy/components/search_box.dart';
+import 'package:hungryyy/components/showcase_card.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Text(
-                    'Bhopal, India  >',
+                    'Arera Colony, Bhopal, India  >',
                     style: TextStyle(
                       fontFamily: 'GT Eesti',
                       color: Colors.grey.shade500,
@@ -102,13 +104,57 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
                 child: SearchBox(
                   hint: 'Search Food',
-                  onChanged: (value){
+                  onChanged: (value) {
                     //TODO:CODE
                   },
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 25,
+              ),
+              ShowcaseCard(
+                label: 'Categories',
+                viewAll: () {
+                  //TODO:CODE
+                },
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 20,
+                      ),
+                      CategoryCard(
+                        category: 'Snacks',
+                        image: AssetImage('images/logo.png'),
+                        onPressed: (){
+                          //TODO:CODE
+                        },
+                      ),
+                      CategoryCard(
+                        category: 'Snacks',
+                        image: AssetImage('images/logo.png'),
+                        onPressed: (){
+                          //TODO:CODE
+                        },
+                      ),
+                      CategoryCard(
+                        category: 'Snacks',
+                        image: AssetImage('images/logo.png'),
+                        onPressed: (){
+                          //TODO:CODE
+                        },
+                      ),
+                      CategoryCard(
+                        category: 'Snacks',
+                        image: AssetImage('images/logo.png'),
+                        onPressed: (){
+                          //TODO:CODE
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

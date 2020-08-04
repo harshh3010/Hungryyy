@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: SplashScreen.id,
       routes: {
-        SplashScreen.id : (context) => SplashScreen(),
+        SplashScreen.id : (context) => HomeScreen(),
         LoginScreen.id : (context) => LoginScreen(),
         RegistrationScreen.id : (context) => RegistrationScreen(),
         DetailsScreen.id : (context) => DetailsScreen(),

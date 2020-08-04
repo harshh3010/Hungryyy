@@ -23,26 +23,35 @@ class SearchBox extends StatelessWidget {
           ]),
       child: Row(
         children: <Widget>[
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(5),
+                bottomRight: Radius.circular(5),
+              ),
+            ),
+            child: Center(
+              child: Icon(
+                  Icons.search,
+                color: Colors.grey.shade700,
+              ),
+            ),
+          ),
           Expanded(
             child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 0),
-                child: TextField(
-                  onChanged: onChanged,
-                  decoration: InputDecoration(
-                      hintText: hint,
-                      hintStyle: TextStyle(
-                        fontFamily: 'GT Eesti',
-                        color: Colors.grey.shade400,
-                      ),
-                      border: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.grey.shade700,
-                      )
-                  ),
-                  cursorColor: kColorRed,
+              child: TextField(
+                onChanged: onChanged,
+                decoration: InputDecoration(
+                    hintText: hint,
+                    hintStyle: TextStyle(
+                      fontFamily: 'GT Eesti',
+                      color: Colors.grey.shade400,
+                    ),
+                    border: InputBorder.none,
                 ),
+                cursorColor: kColorRed,
               ),
             ),
           ),
@@ -59,7 +68,7 @@ class SearchBox extends StatelessWidget {
             child: Center(
               child: Icon(Icons.tune),
             ),
-          )
+          ),
         ],
       ),
     );

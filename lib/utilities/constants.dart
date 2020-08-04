@@ -17,3 +17,8 @@ const TextStyle kHeadingStyle = TextStyle(
   fontSize: 24,
   fontWeight: FontWeight.w600,
 );
+const TextStyle kLabelStyle = TextStyle(
+  fontFamily: 'GT Eesti',
+  color: kColorBlack,
+  fontSize: 24,
+);
