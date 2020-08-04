@@ -4,6 +4,7 @@ import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
 import 'package:hungryyy/components/hungryyy_logo.dart';
 import 'package:hungryyy/screens/login_screen.dart';
+import 'package:hungryyy/services/local_storage.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -37,8 +38,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         AlertBox.showErrorBox(context, 'This email is already in use.');
       }else if(data.toString() == "User registered"){
         // Successful registration
+        LocalStorage.saveLoginInfo(
+          statusCode: 'YES',
+          email: email.text,
+        );
         Navigator.pushReplacementNamed(context, DetailsScreen.id);
-        //TODO: save login state
       }
     }else{
       // Connection failed
