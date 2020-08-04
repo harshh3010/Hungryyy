@@ -9,3 +9,4 @@ const kHostUrl = 'http://192.168.225.195/hungryyy-app';
 const String kRegisterUrl = "$kHostUrl/registration.php";
 const String kLoginUrl = "$kHostUrl/login_user.php";
 const String kSaveDetailsUrl = "$kHostUrl/save_user_details.php";
+const String kCheckUserDetailsUrl = "$kHostUrl/check_user_details.php";

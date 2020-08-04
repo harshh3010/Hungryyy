@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
 import 'package:hungryyy/components/hungryyy_logo.dart';
+import 'package:hungryyy/screens/home_screen.dart';
 import 'package:hungryyy/screens/registration_screen.dart';
 import 'package:hungryyy/services/local_storage.dart';
 import 'package:hungryyy/utilities/constants.dart';
@@ -28,6 +29,26 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController password = new TextEditingController();
   bool _loading = false;
 
+  Future<void> checkUserDetails() async {
+    http.Response response = await http.post(kCheckUserDetailsUrl,body :{
+      "email" : email.text,
+    });
+    if(response.statusCode == 200 || response.statusCode == 201){
+      // Connection established
+      var message = jsonDecode(response.body.toString());
+      if(message == 'Data Present'){
+        // User Details present
+        Navigator.pushReplacementNamed(context, HomeScreen.id);
+      }else if(message == 'Data Absent'){
+        // User Details absent
+        Navigator.pushReplacementNamed(context, DetailsScreen.id);
+      }
+    }else{
+      // Error connecting to the server
+      AlertBox.showErrorBox(context, 'Error establishing connection with the server.');
+    }
+  }
+
   Future<void> loginUser() async {
     var data = {
       'email': email.text,
@@ -43,8 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
           statusCode: 'YES',
           email: email.text,
         );
-        Navigator.pushReplacementNamed(context, DetailsScreen.id);
-        //TODO: LOGIN SUCCESS
+        await checkUserDetails();
       }else if(message == 'Login Failed'){
         // EMAIL OR PASSWORD DID NOT MATCH
         AlertBox.showErrorBox(context, 'Invalid email or password.');
