@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/category_card.dart';
+import 'package:hungryyy/components/restaurant_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/components/showcase_card.dart';
 import 'package:hungryyy/utilities/constants.dart';
@@ -156,6 +157,42 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 15,
+              ),
+              ShowcaseCard(
+                label: 'Near You',
+                viewAll: (){
+                  //TODO:CODE
+                },
+                child: Container(
+                  height: 270,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 20,
+                        ),
+                        RestaurantCard(
+                          name: 'Pizza Hut',
+                          deliveryCharge: 0,
+                          distance: 2,
+                          image: AssetImage('images/dish.jpg'),
+                          rating: 4.5,
+                        ),
+                        RestaurantCard(
+                          name: 'Manohar Dairy',
+                          deliveryCharge: 50,
+                          distance: 5,
+                          image: AssetImage('images/dish.jpg'),
+                          rating: 4.7,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -163,3 +200,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
