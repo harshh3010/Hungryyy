@@ -7,6 +7,7 @@ import 'package:hungryyy/screens/login_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'details_screen.dart';
 
@@ -24,6 +25,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController cnfPassword = new TextEditingController();
   bool _loading = false;
 
+  saveLoginInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('login_status', 'YES');
+    await prefs.setString('login_email', email.text);
+  }
+
   Future<void> registerUser() async {
     final http.Response response = await http.post(kRegisterUrl, body: {
       "email": email.text,
@@ -37,8 +44,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         AlertBox.showErrorBox(context, 'This email is already in use.');
       }else if(data.toString() == "User registered"){
         // Successful registration
+        saveLoginInfo();
         Navigator.pushReplacementNamed(context, DetailsScreen.id);
-        //TODO: save login state
       }
     }else{
       // Connection failed
