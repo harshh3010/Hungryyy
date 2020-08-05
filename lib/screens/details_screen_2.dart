@@ -10,7 +10,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-import 'navigation_screens/home_screen.dart';
+import 'home_screen.dart';
 import 'menu_screen.dart';
 
 class DetailsScreen2 extends StatefulWidget {

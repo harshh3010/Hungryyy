@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
 import 'package:hungryyy/components/hungryyy_logo.dart';
-import 'file:///F:/FlutterProjects/hungryyy/hungryyy/lib/screens/navigation_screens/home_screen.dart';
 import 'package:hungryyy/screens/registration_screen.dart';
 import 'package:hungryyy/services/local_storage.dart';
 import 'package:hungryyy/utilities/constants.dart';

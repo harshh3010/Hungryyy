@@ -10,12 +10,13 @@ class DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
+    return FlatButton(
+      padding: EdgeInsets.symmetric(horizontal: 0,vertical: 15),
+      onPressed: onPressed,
       child: Row(
         children: <Widget>[
           Icon(
-              icon
+              icon,
           ),
           SizedBox(
             width: 15,

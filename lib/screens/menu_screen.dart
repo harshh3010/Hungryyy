@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/drawer_item.dart';
+import 'package:hungryyy/screens/home_screen.dart';
 import 'package:hungryyy/services/local_storage.dart';
-import 'file:///F:/FlutterProjects/hungryyy/hungryyy/lib/screens/navigation_screens/home_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
@@ -17,8 +17,7 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
 
-  Widget displayPage;
-  String displayPageId = 'home_page';
+  int _currentPageIndex = 0;
   bool _loading = false;
 
   Future<void> logoutUser() async {
@@ -29,11 +28,6 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    switch(displayPageId){
-      case 'home_page': displayPage = HomeScreen();
-      break;
-    }
 
     return Stack(
       children: <Widget>[
@@ -85,88 +79,71 @@ class _MenuScreenState extends State<MenuScreen> {
                                     icon: Icons.home,
                                     onPressed: (){
                                       setState(() {
-                                        displayPageId = 'home_page';
+                                        _currentPageIndex = 0;
                                       });
                                     },
-                                  ),
-                                  SizedBox(
-                                    height: 30,
                                   ),
                                   DrawerItem(
                                     label: 'My Orders',
                                     icon: Icons.content_paste,
                                     onPressed: (){
-                                      //TODO:CODE
+                                      setState(() {
+                                        _currentPageIndex = 1;
+                                      });
                                     },
-                                  ),
-                                  SizedBox(
-                                    height: 30,
-                                  ),
-                                  DrawerItem(
-                                    label: 'My Profile',
-                                    icon: Icons.person_outline,
-                                    onPressed: (){
-                                      //TODO:CODE
-                                    },
-                                  ),
-                                  SizedBox(
-                                    height: 30,
                                   ),
                                   DrawerItem(
                                     label: 'My Address',
                                     icon: Icons.location_on,
                                     onPressed: (){
-                                      //TODO:CODE
+                                      setState(() {
+                                        _currentPageIndex = 2;
+                                      });
                                     },
-                                  ),
-                                  SizedBox(
-                                    height: 30,
                                   ),
                                   DrawerItem(
                                     label: 'Payment Methods',
                                     icon: Icons.payment,
                                     onPressed: (){
-                                      //TODO:CODE
+                                      setState(() {
+                                        _currentPageIndex = 3;
+                                      });
                                     },
-                                  ),
-                                  SizedBox(
-                                    height: 30,
                                   ),
                                   DrawerItem(
                                     label: 'My Vouchers',
                                     icon: Icons.description,
                                     onPressed: (){
-                                      //TODO:CODE
+                                      setState(() {
+                                        _currentPageIndex = 4;
+                                      });
                                     },
-                                  ),
-                                  SizedBox(
-                                    height: 30,
                                   ),
                                   DrawerItem(
                                     label: 'Contact Us',
                                     icon: Icons.chat_bubble_outline,
                                     onPressed: (){
-                                      //TODO:CODE
+                                      setState(() {
+                                        _currentPageIndex = 5;
+                                      });
                                     },
-                                  ),
-                                  SizedBox(
-                                    height: 30,
                                   ),
                                   DrawerItem(
                                     label: 'Settings',
                                     icon: Icons.settings,
                                     onPressed: (){
-                                      //TODO:CODE
+                                      setState(() {
+                                        _currentPageIndex = 6;
+                                      });
                                     },
-                                  ),
-                                  SizedBox(
-                                    height: 30,
                                   ),
                                   DrawerItem(
                                     label: 'Help & FAQs',
                                     icon: Icons.help_outline,
                                     onPressed: (){
-                                      //TODO:CODE
+                                      setState(() {
+                                        _currentPageIndex = 7;
+                                      });
                                     },
                                   ),
                                 ],
@@ -198,7 +175,9 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
           ),
         ),
-        displayPage,
+        HomeScreen(
+          currentIndex: _currentPageIndex,
+        ),
       ],
     );
   }

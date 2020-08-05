@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import 'details_screen.dart';
-import 'navigation_screens/home_screen.dart';
+import 'home_screen.dart';
 import 'menu_screen.dart';
 
 class SplashScreen extends StatefulWidget {
