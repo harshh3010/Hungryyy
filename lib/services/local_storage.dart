@@ -9,10 +9,17 @@ class LocalStorage{
     await prefs.setString('login_email', email);
   }
 
-  static Future<void> saveUserDetails({@required String name,@required String contactNumber}) async {
+  static Future<void> saveUserDetails({@required String name,@required String contactNumber,@required String houseName,@required String streetName,
+  @required String cityName,@required String stateName,@required String postalCode,@required String countryName}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_name', name);
     await prefs.setString('user_contact', contactNumber);
+    await prefs.setString('house_name', houseName);
+    await prefs.setString('street_name', streetName);
+    await prefs.setString('city_name', cityName);
+    await prefs.setString('state_name', stateName);
+    await prefs.setString('postal_code', postalCode);
+    await prefs.setString('country_name', countryName);
   }
 
 }

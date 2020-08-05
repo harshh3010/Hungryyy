@@ -27,9 +27,9 @@ class MyApp extends StatelessWidget {
         primaryColor: kColorYellow,
         accentColor: kColorRed,
       ),
-      initialRoute: DetailsScreen.id,
+      initialRoute: SplashScreen.id,
       routes: {
-        SplashScreen.id : (context) => HomeScreen(),
+        SplashScreen.id : (context) => SplashScreen(),
         LoginScreen.id : (context) => LoginScreen(),
         RegistrationScreen.id : (context) => RegistrationScreen(),
         DetailsScreen.id : (context) => DetailsScreen(),
