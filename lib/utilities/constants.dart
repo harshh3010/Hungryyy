@@ -10,3 +10,20 @@ const String kRegisterUrl = "$kHostUrl/registration.php";
 const String kLoginUrl = "$kHostUrl/login_user.php";
 const String kSaveDetailsUrl = "$kHostUrl/save_user_details.php";
 const String kCheckUserDetailsUrl = "$kHostUrl/check_user_details.php";
+
+const TextStyle kHeadingStyle = TextStyle(
+  fontFamily: 'GT Eesti',
+  color: kColorBlack,
+  fontSize: 24,
+  fontWeight: FontWeight.w600,
+);
+const TextStyle kLabelStyle = TextStyle(
+  fontFamily: 'GT Eesti',
+  color: kColorBlack,
+  fontSize: 24,
+);
+const TextStyle kItemStyle = TextStyle(
+  fontFamily: 'GT Eesti',
+  color: kColorBlack,
+  fontSize: 20,
+);

@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
 import 'package:hungryyy/components/hungryyy_logo.dart';
-import 'package:hungryyy/screens/home_screen.dart';
 import 'package:hungryyy/screens/registration_screen.dart';
 import 'package:hungryyy/services/local_storage.dart';
 import 'package:hungryyy/utilities/constants.dart';
@@ -14,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'details_screen.dart';
+import 'menu_screen.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
       var message = jsonDecode(response.body.toString());
       if(message == 'Data Present'){
         // User Details present
-        Navigator.pushReplacementNamed(context, HomeScreen.id);
+        Navigator.pushReplacementNamed(context, MenuScreen.id);
       }else if(message == 'Data Absent'){
         // User Details absent
         Navigator.pushReplacementNamed(context, DetailsScreen.id);

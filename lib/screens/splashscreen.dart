@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 import 'details_screen.dart';
 import 'home_screen.dart';
+import 'menu_screen.dart';
 
 class SplashScreen extends StatefulWidget {
 
@@ -33,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
       var message = jsonDecode(response.body.toString());
       if(message == 'Data Present'){
         // User Details present
-        Navigator.pushReplacementNamed(context, HomeScreen.id);
+        Navigator.pushReplacementNamed(context, MenuScreen.id);
       }else if(message == 'Data Absent'){
         // User Details absent
         Navigator.pushReplacementNamed(context, DetailsScreen.id);
