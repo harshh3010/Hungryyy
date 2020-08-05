@@ -26,7 +26,7 @@ class MostPopularCard extends StatelessWidget {
       height: 230,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
             color: kColorBlack.withOpacity(0.1),
@@ -45,7 +45,7 @@ class MostPopularCard extends StatelessWidget {
                     image: image,
                     fit: BoxFit.cover
                 ),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
             ),
           ),

@@ -11,6 +11,8 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'details_screen_2.dart';
+
 class DetailsScreen extends StatefulWidget {
 
   static final String id = 'details_screen';
@@ -24,48 +26,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
   bool _loading = false;
   TextEditingController name = new TextEditingController();
   TextEditingController phoneNumber = new TextEditingController();
-  String userEmail;
-
-  Future<void> saveUserData() async {
-    //TODO:ADD MORE DETAILS
-    final http.Response response = await http.post(kSaveDetailsUrl, body: {
-      "name": name.text,
-      "phone_number":phoneNumber.text,
-      "email" : userEmail,
-    });
-
-    if(response.statusCode == 200 || response.statusCode == 201){
-      // Connection established
-      var data = jsonDecode(response.body.toString());
-      if(data.toString() == "SUCCESS"){
-        // DATA STORED SUCCESSFULLY
-        await LocalStorage.saveUserDetails(
-            name: name.text,
-            contactNumber: phoneNumber.text,
-        );
-        Navigator.pushReplacementNamed(context, HomeScreen.id);
-      }else if(data.toString() == "FAILED"){
-        // UNABLE TO STORE DATA
-        AlertBox.showErrorBox(context, 'Unable to store user data.');
-      }
-    }else{
-      // Connection failed
-      AlertBox.showErrorBox(context, 'Error establishing connection with the server.\nError Code ${response.statusCode}');
-    }
-  }
-
-  Future<void> getLoginEmail() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userEmail = prefs.getString('login_email') ?? null;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getLoginEmail();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +83,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 _loading = true;
                               });
                               if(name.text != null && phoneNumber.text != null && name.text != "" && phoneNumber.text != null){
-                                await saveUserData();
+                                //TODO:VERIFY PHONE
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DetailsScreen2(name: name.text,phoneNumber: phoneNumber.text,)));
                               }else{
                                 AlertBox.showErrorBox(context, 'Please fill up the required fields');
                               }

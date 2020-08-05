@@ -127,29 +127,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                       ),
                       CategoryCard(
-                        category: 'Snacks',
-                        image: AssetImage('images/logo.png'),
+                        category: 'Pizza',
+                        image: AssetImage('images/category_pizza.png'),
                         onPressed: (){
                           //TODO:CODE
                         },
                       ),
                       CategoryCard(
-                        category: 'Snacks',
-                        image: AssetImage('images/logo.png'),
+                        category: 'Burger',
+                        image: AssetImage('images/category_burger.png'),
                         onPressed: (){
                           //TODO:CODE
                         },
                       ),
                       CategoryCard(
-                        category: 'Snacks',
-                        image: AssetImage('images/logo.png'),
+                        category: 'Chinese',
+                        image: AssetImage('images/category_chinese.png'),
                         onPressed: (){
                           //TODO:CODE
                         },
                       ),
                       CategoryCard(
-                        category: 'Snacks',
-                        image: AssetImage('images/logo.png'),
+                        category: 'Desserts',
+                        image: AssetImage('images/category_dessert.png'),
                         onPressed: (){
                           //TODO:CODE
                         },
