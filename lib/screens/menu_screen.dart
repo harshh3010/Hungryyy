@@ -48,111 +48,120 @@ class _MenuScreenState extends State<MenuScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                Text(
-                                  'Harsh Gyanchandani',
-                                  style: kLabelStyle,
-                                ),
-                                Text(
-                                  'harsh.gyanchandani@gmail.com',
-                                  style: TextStyle(
-                                    fontFamily: 'GT Eesti',
-                                    color: Colors.grey.shade500,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            SingleChildScrollView(
-                              child: Column(
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
-                                  DrawerItem(
-                                    label: 'Home',
-                                    icon: Icons.home,
-                                    onPressed: (){
-                                      setState(() {
-                                        _currentPageIndex = 0;
-                                      });
-                                    },
+                                  Text(
+                                    'Harsh Gyanchandani',
+                                    style: kLabelStyle,
                                   ),
-                                  DrawerItem(
-                                    label: 'My Orders',
-                                    icon: Icons.content_paste,
-                                    onPressed: (){
-                                      setState(() {
-                                        _currentPageIndex = 1;
-                                      });
-                                    },
-                                  ),
-                                  DrawerItem(
-                                    label: 'My Address',
-                                    icon: Icons.location_on,
-                                    onPressed: (){
-                                      setState(() {
-                                        _currentPageIndex = 2;
-                                      });
-                                    },
-                                  ),
-                                  DrawerItem(
-                                    label: 'Payment Methods',
-                                    icon: Icons.payment,
-                                    onPressed: (){
-                                      setState(() {
-                                        _currentPageIndex = 3;
-                                      });
-                                    },
-                                  ),
-                                  DrawerItem(
-                                    label: 'My Vouchers',
-                                    icon: Icons.description,
-                                    onPressed: (){
-                                      setState(() {
-                                        _currentPageIndex = 4;
-                                      });
-                                    },
-                                  ),
-                                  DrawerItem(
-                                    label: 'Contact Us',
-                                    icon: Icons.chat_bubble_outline,
-                                    onPressed: (){
-                                      setState(() {
-                                        _currentPageIndex = 5;
-                                      });
-                                    },
-                                  ),
-                                  DrawerItem(
-                                    label: 'Settings',
-                                    icon: Icons.settings,
-                                    onPressed: (){
-                                      setState(() {
-                                        _currentPageIndex = 6;
-                                      });
-                                    },
-                                  ),
-                                  DrawerItem(
-                                    label: 'Help & FAQs',
-                                    icon: Icons.help_outline,
-                                    onPressed: (){
-                                      setState(() {
-                                        _currentPageIndex = 7;
-                                      });
-                                    },
+                                  Text(
+                                    'harsh.gyanchandani@gmail.com',
+                                    style: TextStyle(
+                                      fontFamily: 'GT Eesti',
+                                      color: Colors.grey.shade500,
+                                      fontSize: 14,
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 40,
+                              ),
+                              Expanded(
+                                child: CustomScrollView(
+                                  slivers: <Widget>[
+                                    SliverFillRemaining(
+                                      hasScrollBody: false,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        children: <Widget>[
+                                          DrawerItem(
+                                            label: 'Home',
+                                            icon: Icons.home,
+                                            onPressed: (){
+                                              setState(() {
+                                                _currentPageIndex = 0;
+                                              });
+                                            },
+                                          ),
+                                          DrawerItem(
+                                            label: 'My Orders',
+                                            icon: Icons.content_paste,
+                                            onPressed: (){
+                                              setState(() {
+                                                _currentPageIndex = 1;
+                                              });
+                                            },
+                                          ),
+                                          DrawerItem(
+                                            label: 'My Address',
+                                            icon: Icons.location_on,
+                                            onPressed: (){
+                                              setState(() {
+                                                _currentPageIndex = 2;
+                                              });
+                                            },
+                                          ),
+                                          DrawerItem(
+                                            label: 'Payment Methods',
+                                            icon: Icons.payment,
+                                            onPressed: (){
+                                              setState(() {
+                                                _currentPageIndex = 3;
+                                              });
+                                            },
+                                          ),
+                                          DrawerItem(
+                                            label: 'My Vouchers',
+                                            icon: Icons.description,
+                                            onPressed: (){
+                                              setState(() {
+                                                _currentPageIndex = 4;
+                                              });
+                                            },
+                                          ),
+                                          DrawerItem(
+                                            label: 'Contact Us',
+                                            icon: Icons.chat_bubble_outline,
+                                            onPressed: (){
+                                              setState(() {
+                                                _currentPageIndex = 5;
+                                              });
+                                            },
+                                          ),
+                                          DrawerItem(
+                                            label: 'Settings',
+                                            icon: Icons.settings,
+                                            onPressed: (){
+                                              setState(() {
+                                                _currentPageIndex = 6;
+                                              });
+                                            },
+                                          ),
+                                          DrawerItem(
+                                            label: 'Help & FAQs',
+                                            icon: Icons.help_outline,
+                                            onPressed: (){
+                                              setState(() {
+                                                _currentPageIndex = 7;
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(
-                          height: 40,
+                          height: 25,
                         ),
                         DrawerItem(
                           label: 'Log Out',
