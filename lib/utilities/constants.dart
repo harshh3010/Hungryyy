@@ -22,3 +22,8 @@ const TextStyle kLabelStyle = TextStyle(
   color: kColorBlack,
   fontSize: 24,
 );
+const TextStyle kItemStyle = TextStyle(
+  fontFamily: 'GT Eesti',
+  color: kColorBlack,
+  fontSize: 20,
+);

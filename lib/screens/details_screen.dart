@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
 import 'package:hungryyy/components/hungryyy_logo.dart';
-import 'package:hungryyy/screens/home_screen.dart';
+import 'file:///F:/FlutterProjects/hungryyy/hungryyy/lib/screens/navigation_screens/home_screen.dart';
 import 'package:hungryyy/services/local_storage.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
