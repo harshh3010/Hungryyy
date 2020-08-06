@@ -10,6 +10,7 @@ import 'package:hungryyy/components/showcase_card.dart';
 import 'package:hungryyy/model/category.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -30,12 +31,16 @@ class _SearchPageState extends State<SearchPage> {
     ),
   ];
   bool displayCategories = true;
+  String cityName,stateName,countryName;
 
   Future<void> loadCategories() async {
+
+    await getUserDetails();
+
     final http.Response response = await http.post(kLoadCategoriesUrl,body: {
-      'city_name': 'Bhopal',
-      'state_name' : 'Madhya Pradesh',
-      'country_name' : 'India',
+      'city_name': cityName,
+      'state_name' : stateName,
+      'country_name' : countryName,
     });
     if(response.statusCode == 200 || response.statusCode == 201){
       // Connection established
@@ -81,6 +86,16 @@ class _SearchPageState extends State<SearchPage> {
         displayCategories = false;
       });
     }
+  }
+
+  Future<void> getUserDetails() async {
+    //TODO:GET DETAILS USING LOCATION
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      cityName = prefs.getString('city_name') ?? null;
+      stateName = prefs.getString('state_name') ?? null;
+      countryName = prefs.getString('country_name') ?? null;
+    });
   }
 
   @override
@@ -187,7 +202,7 @@ class _SearchPageState extends State<SearchPage> {
                         //TODO:CODE
                       },
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(left: 20)  ,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
