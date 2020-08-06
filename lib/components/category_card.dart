@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/model/category.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class CategoryCard extends StatelessWidget {
 
-  final String category;
-  final ImageProvider image;
+  final Category category;
   final Function onPressed;
-  CategoryCard({@required this.category,@required this.image,@required this.onPressed});
+  CategoryCard({@required this.category,@required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class CategoryCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image(
-              image: image,
+              image: AssetImage('images/${category.id}.png'),
               height: 40,
               width: 40,
             ),
@@ -38,7 +38,7 @@ class CategoryCard extends StatelessWidget {
               height: 10,
             ),
             Text(
-              category,
+              category.name,
               style: TextStyle(
                 fontFamily: 'GT Eesti',
               ),

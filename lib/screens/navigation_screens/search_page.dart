@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/category_card.dart';
 import 'package:hungryyy/components/most_popular_card.dart';
 import 'package:hungryyy/components/restaurant_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/components/showcase_card.dart';
+import 'package:hungryyy/model/category.dart';
 import 'package:hungryyy/utilities/constants.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -15,6 +21,89 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+
+  List<Widget> categoriesToDisplay = [
+    Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
+      child: CircularProgressIndicator(
+        strokeWidth: 4,
+      ),
+    ),
+  ];
+  bool displayCategories = true;
+  String cityName,stateName,countryName;
+
+  Future<void> loadCategories() async {
+
+    await getUserDetails();
+
+    final http.Response response = await http.post(kLoadCategoriesUrl,body: {
+      'city_name': cityName,
+      'state_name' : stateName,
+      'country_name' : countryName,
+    });
+    if(response.statusCode == 200 || response.statusCode == 201){
+      // Connection established
+      var data = jsonDecode(response.body.toString());
+      if(data.toString() == 'Error loading data'){
+        AlertBox.showErrorBox(context,'Unable to load categories of food near you.');
+        setState(() {
+          displayCategories = false;
+        });
+      }else{
+        List<Widget> myList = [];
+        for(Map map in data){
+          Category category = Category(
+            name: map['category_name'],
+            id: map['category_id'],
+          );
+          if(category.id != 'category_other'){
+            myList.add(
+              CategoryCard(
+                category: category,
+                onPressed: (){
+                  //TODO:CODE
+                },
+              ),
+            );
+          }
+        }
+        if(myList.isEmpty){
+          setState(() {
+            displayCategories = false;
+          });
+        }else{
+          setState(() {
+            displayCategories = true;
+            categoriesToDisplay = myList;
+          });
+        }
+      }
+    }else{
+      // Connection not established
+      AlertBox.showErrorBox(context,'Unable to establish connection with the server');
+      setState(() {
+        displayCategories = false;
+      });
+    }
+  }
+
+  Future<void> getUserDetails() async {
+    //TODO:GET DETAILS USING LOCATION
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      cityName = prefs.getString('city_name') ?? null;
+      stateName = prefs.getString('state_name') ?? null;
+      countryName = prefs.getString('country_name') ?? null;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,53 +193,30 @@ class _SearchPageState extends State<SearchPage> {
             SizedBox(
               height: 25,
             ),
-            ShowcaseCard(
-              label: 'Categories',
-              viewAll: () {
-                //TODO:CODE
-              },
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
+            displayCategories ?
+                Column(
                   children: <Widget>[
+                    ShowcaseCard(
+                      label: 'Categories',
+                      viewAll: () {
+                        //TODO:CODE
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20)  ,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: categoriesToDisplay,
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(
-                      width: 20,
-                    ),
-                    CategoryCard(
-                      category: 'Pizza',
-                      image: AssetImage('images/category_pizza.png'),
-                      onPressed: (){
-                        //TODO:CODE
-                      },
-                    ),
-                    CategoryCard(
-                      category: 'Burger',
-                      image: AssetImage('images/category_burger.png'),
-                      onPressed: (){
-                        //TODO:CODE
-                      },
-                    ),
-                    CategoryCard(
-                      category: 'Chinese',
-                      image: AssetImage('images/category_chinese.png'),
-                      onPressed: (){
-                        //TODO:CODE
-                      },
-                    ),
-                    CategoryCard(
-                      category: 'Desserts',
-                      image: AssetImage('images/category_dessert.png'),
-                      onPressed: (){
-                        //TODO:CODE
-                      },
+                      height: 15,
                     ),
                   ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
+                )
+                : Container(),
             ShowcaseCard(
               label: 'Near You',
               viewAll: (){
