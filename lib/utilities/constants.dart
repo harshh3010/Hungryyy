@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/model/category.dart';
 
 const Color kColorYellow = Color(0xffffc700);
 const Color kColorRed = Color(0xffff403b);
@@ -10,6 +11,7 @@ const String kRegisterUrl = "$kHostUrl/registration.php";
 const String kLoginUrl = "$kHostUrl/login_user.php";
 const String kSaveDetailsUrl = "$kHostUrl/save_user_details.php";
 const String kCheckUserDetailsUrl = "$kHostUrl/check_user_details.php";
+const String kLoadCategoriesUrl = "$kHostUrl/load_categories.php";
 
 const TextStyle kHeadingStyle = TextStyle(
   fontFamily: 'GT Eesti',
@@ -27,3 +29,12 @@ const TextStyle kItemStyle = TextStyle(
   color: kColorBlack,
   fontSize: 20,
 );
+
+const List<Category> kCommonCategories = [
+  Category(id: 'category_pizza',name: 'Pizza'),
+  Category(id: 'category_burger',name: 'Burger'),
+  Category(id: 'category_chinese',name: 'Chinese'),
+  Category(id: 'category_dessert',name: 'Desserts'),
+  Category(id: 'category_fries',name: 'Fries'),
+  Category(id: 'category_shake',name: 'Shakes'),
+];
