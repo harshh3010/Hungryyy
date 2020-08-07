@@ -208,6 +208,7 @@ class _SearchPageState extends State<SearchPage> {
                       state: userApi.stateName,
                       country: userApi.countryName,
                       categoryId: category.id,
+                      popular: 'NO',
                     ),
                   ));
                 },
@@ -345,6 +346,7 @@ class _SearchPageState extends State<SearchPage> {
                               state: userApi.stateName,
                               country: userApi.countryName,
                               categoryId: 'none',
+                              popular: 'NO',
                             ),
                         ));
                       },
@@ -398,7 +400,15 @@ class _SearchPageState extends State<SearchPage> {
             ShowcaseCard(
               label: 'Most Popular',
               viewAll: (){
-                //TODO:CODE
+                Navigator.push(context,MaterialPageRoute(
+                  builder: (context) => DishScreen(
+                    city: userApi.cityName,
+                    state: userApi.stateName,
+                    country: userApi.countryName,
+                    categoryId: 'none',
+                    popular: 'YES',
+                  ),
+                ));
               },
               child: mostPopularDish,
             ),

@@ -12,9 +12,9 @@ class DishScreen extends StatefulWidget {
   @override
   _DishScreenState createState() => _DishScreenState();
 
-  final String city, state, country,categoryId;
+  final String city, state, country,categoryId,popular;
   DishScreen(
-      {@required this.city, @required this.state, @required this.country,@required this.categoryId});
+      {@required this.city, @required this.state, @required this.country,@required this.categoryId,@required this.popular});
 }
 
 class _DishScreenState extends State<DishScreen> {
@@ -37,6 +37,7 @@ class _DishScreenState extends State<DishScreen> {
       'state_name': widget.state,
       'country_name': widget.country,
       'category_id' : widget.categoryId,
+      'popular' : widget.popular,
     });
     if (response.statusCode == 200 || response.statusCode == 201) {
       // Connection established
