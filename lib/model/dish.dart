@@ -14,10 +14,12 @@ class Dish{
   String stateName;
   String countryName;
   String categoryName;
+  double deliveryCharge;
+  String restaurantName;
 
   Dish({this.id, this.restaurantId, this.name, this.categoryId, this.rating,
       this.price, this.discount, this.extraName, this.extraPrice, this.imageUrl,
-      this.cityName, this.stateName, this.countryName, this.categoryName});
+      this.cityName, this.stateName, this.countryName, this.categoryName,this.deliveryCharge,this.restaurantName});
 
   Map<String,Object> toJson(){
     return {
@@ -35,8 +37,8 @@ class Dish{
       'state_name' : stateName,
       'country_name' : countryName,
       'category_name' : categoryName,
+      'delivery_charge' : deliveryCharge,
+      'restaurant_name' : restaurantName,
     };
   }
-
-
 }

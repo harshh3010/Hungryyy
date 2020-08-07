@@ -13,6 +13,7 @@ const String kSaveDetailsUrl = "$kHostUrl/save_user_details.php";
 const String kLoadUserDetailsUrl = "$kHostUrl/load_user_details.php";
 const String kCheckUserDetailsUrl = "$kHostUrl/check_user_details.php";
 const String kLoadCategoriesUrl = "$kHostUrl/load_categories.php";
+const String kLoadDishesUrl = "$kHostUrl/load_dishes.php";
 
 const TextStyle kHeadingStyle = TextStyle(
   fontFamily: 'GT Eesti',

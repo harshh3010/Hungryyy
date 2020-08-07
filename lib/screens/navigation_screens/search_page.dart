@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/category_card.dart';
-import 'package:hungryyy/components/most_popular_card.dart';
+import 'package:hungryyy/components/dish_card.dart';
 import 'package:hungryyy/components/restaurant_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/components/showcase_card.dart';
 import 'package:hungryyy/model/category.dart';
+import 'package:hungryyy/model/dish.dart';
+import 'package:hungryyy/screens/dish_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:hungryyy/utilities/user_api.dart';
@@ -122,7 +124,7 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ),
                 Text(
-                  'Arera Colony, Bhopal, India  >',
+                  '${userApi.streetName}, ${userApi.cityName} >',
                   style: TextStyle(
                     fontFamily: 'GT Eesti',
                     color: Colors.grey.shade500,
@@ -188,7 +190,14 @@ class _SearchPageState extends State<SearchPage> {
                     ShowcaseCard(
                       label: 'Categories',
                       viewAll: () {
-                        //TODO:CODE
+                        //TODO:UPDATE CURRENT LOCATION
+                        Navigator.push(context,MaterialPageRoute(
+                            builder: (context) => DishScreen(
+                              city: userApi.cityName,
+                              state: userApi.stateName,
+                              country: userApi.countryName,
+                            ),
+                        ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20)  ,
@@ -242,20 +251,16 @@ class _SearchPageState extends State<SearchPage> {
             SizedBox(
               height: 15,
             ),
-            ShowcaseCard(
-              label: 'Most Popular',
-              viewAll: (){
-                //TODO:CODE
-              },
-              child: MostPopularCard(
-                name: 'Blue Lagoon',
-                restaurantName: 'Dew Drops',
-                rating: 5,
-                image: AssetImage('images/dish.jpg'),
-                distance: 1.5,
-                deliveryCharge: 0,
-              ),
-            ),
+//TODO: ADD MOST POPULAR
+//            ShowcaseCard(
+//              label: 'Most Popular',
+//              viewAll: (){
+//                //TODO:CODE
+//              },
+//              child: DishCard(
+//                dish: Dish(),
+//              ),
+//            ),
           ],
         ),
       ),
