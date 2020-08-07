@@ -9,6 +9,7 @@ import 'package:hungryyy/components/showcase_card.dart';
 import 'package:hungryyy/model/category.dart';
 import 'package:hungryyy/model/restaurant.dart';
 import 'package:hungryyy/screens/dish_screen.dart';
+import 'package:hungryyy/screens/restaurant_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:hungryyy/utilities/user_api.dart';
@@ -288,27 +289,39 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 )
                 : Container(),
-            ShowcaseCard(
-              label: 'Near You',
-              viewAll: (){
-                //TODO:CODE
-              },
-              child: Container(
-                height: 270,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: restaurantsToDisplay,
+            displayRestaurants ?
+                Column(
+                  children: <Widget>[
+                    ShowcaseCard(
+                      label: 'Near You',
+                      viewAll: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RestaurantScreen(restaurants: allRestaurants,),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 270,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: restaurantsToDisplay,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                  ],
+                ):Container(),
+
+
 //TODO: ADD MOST POPULAR
 //            ShowcaseCard(
 //              label: 'Most Popular',
