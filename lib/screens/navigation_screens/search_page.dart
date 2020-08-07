@@ -7,6 +7,7 @@ import 'package:hungryyy/components/restaurant_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/components/showcase_card.dart';
 import 'package:hungryyy/model/category.dart';
+import 'package:hungryyy/model/restaurant.dart';
 import 'package:hungryyy/screens/dish_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +23,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
 
+  //TODO:LOAD CURRENT POSITION
   List<Widget> categoriesToDisplay = [
     Padding(
       padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
@@ -30,12 +32,76 @@ class _SearchPageState extends State<SearchPage> {
       ),
     ),
   ];
+  List<Widget> restaurantsToDisplay = [
+    Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
+      child: CircularProgressIndicator(
+        strokeWidth: 4,
+      ),
+    ),
+  ];
+  List<Restaurant> allRestaurants = [];
   bool displayCategories = true;
+  bool displayRestaurants = true;
   UserApi userApi = UserApi.instance;
 
-  Future<void> loadCategories() async {
+  Future<void> loadRestaurants() async {
+    final http.Response response = await http.post(kLoadRestaurantsUrl,body: {
+      'city_name': userApi.cityName,
+      'state_name' : userApi.stateName,
+      'country_name' : userApi.countryName,
+    });
+    if(response.statusCode == 200 || response.statusCode == 201){
+      // Connection established
+      var data = jsonDecode(response.body.toString());
+      if(data.toString() == 'Error loading data'){
+        AlertBox.showErrorBox(context,'Unable to load categories of food near you.');
+      }else{
+        List<Widget> myList = [];
+        for(Map map in data){
+          Restaurant restaurant = Restaurant(
+            id: map['id'],
+            name: map['name'],
+            streetName: map['street_name'],
+            cityName: map['city_name'],
+            stateName: map['state_name'],
+            postalCode: map['postal_code'],
+            countryName: map['country_name'],
+            phoneNumber: map['phone_number'],
+            latitude: double.parse(map['latitude']),
+            longitude: double.parse(map['longitude']),
+            rating: double.parse(map['rating']),
+            imageUrl: map['image_url'],
+            deliveryCharge: double.parse(map['delivery_charge']),
+          );
+          allRestaurants.add(restaurant);
+        }
+        int n = 0;
+        for(var restaurant in allRestaurants){
+          n++;
+          if(n == 5){
+            break;
+          }
+          myList.add(
+            RestaurantCard(
+              restaurant: restaurant,
+            ),
+          );
+          setState(() {
+            restaurantsToDisplay = myList;
+          });
+        }
+        setState(() {
+          restaurantsToDisplay = myList;
+        });
+      }
+    }else{
+      // Connection not established
+      AlertBox.showErrorBox(context,'Unable to establish connection with the server');
+    }
+  }
 
-    //TODO:LOAD CURRENT POSITION
+  Future<void> loadCategories() async {
     final http.Response response = await http.post(kLoadCategoriesUrl,body: {
       'city_name': userApi.cityName,
       'state_name' : userApi.stateName,
@@ -98,6 +164,7 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     loadCategories();
+    loadRestaurants();
   }
 
   @override
@@ -228,28 +295,13 @@ class _SearchPageState extends State<SearchPage> {
               },
               child: Container(
                 height: 270,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 20,
-                      ),
-                      RestaurantCard(
-                        name: 'Pizza Hut',
-                        deliveryCharge: 0,
-                        distance: 2,
-                        image: AssetImage('images/dish.jpg'),
-                        rating: 4.5,
-                      ),
-                      RestaurantCard(
-                        name: 'Manohar Dairy',
-                        deliveryCharge: 50,
-                        distance: 5,
-                        image: AssetImage('images/dish.jpg'),
-                        rating: 4.7,
-                      ),
-                    ],
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: restaurantsToDisplay,
+                    ),
                   ),
                 ),
               ),

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/model/restaurant.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class RestaurantCard extends StatelessWidget {
 
-  final String name;
-  final double distance,deliveryCharge,rating;
-  final ImageProvider image;
-  RestaurantCard({@required this.name,@required this.distance,@required this.deliveryCharge,@required this.rating,@required this.image});
+  final Restaurant restaurant;
+  RestaurantCard({@required this.restaurant});
 
   @override
   Widget build(BuildContext context) {
 
+    //TODO:UPDATE DISTANCE
     String deliveryText;
-
-    if(deliveryCharge == 0){
+    double distance = 0;
+    if(restaurant.deliveryCharge == 0){
       deliveryText = 'Free Delivery';
     }else{
-      deliveryText = 'Rs. $deliveryCharge Delivery Cost';
+      deliveryText = 'Rs. ${restaurant.deliveryCharge} Delivery Cost';
     }
 
     return Container(
@@ -42,7 +42,7 @@ class RestaurantCard extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: image,
+                    image: NetworkImage(restaurant.imageUrl),
                     fit: BoxFit.cover
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -53,7 +53,7 @@ class RestaurantCard extends StatelessWidget {
             height: 10,
           ),
           Text(
-            name,
+            restaurant.name,
             style: TextStyle(
               fontFamily: 'GT Eesti',
               fontSize: 18,
@@ -117,7 +117,7 @@ class RestaurantCard extends StatelessWidget {
                 ),
               ),
               Text(
-                '$rating',
+                '${restaurant.rating}',
                 style: TextStyle(
                     fontFamily: 'GT Eesti',
                     fontSize: 12
