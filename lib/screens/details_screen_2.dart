@@ -6,6 +6,7 @@ import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
 import 'package:hungryyy/services/local_storage.dart';
 import 'package:hungryyy/utilities/constants.dart';
+import 'package:hungryyy/utilities/user_api.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -33,6 +34,7 @@ class _DetailsScreen2State extends State<DetailsScreen2> {
   String userEmail;
   double latitude,longitude;
   bool _loading = false;
+  UserApi userApi = UserApi.instance;
 
   Future<void> saveUserData() async {
     final http.Response response = await http.post(kSaveDetailsUrl, body: {
@@ -52,16 +54,14 @@ class _DetailsScreen2State extends State<DetailsScreen2> {
       var data = jsonDecode(response.body.toString());
       if(data.toString() == "SUCCESS"){
         // DATA STORED SUCCESSFULLY
-        await LocalStorage.saveUserDetails(
-          name: widget.name,
-          contactNumber: widget.phoneNumber,
-          houseName: houseName,
-          streetName: streetName,
-          cityName: cityName,
-          stateName: stateName,
-          postalCode: postalCode,
-          countryName: countryName,
-        );
+        userApi.name = widget.name;
+        userApi.phoneNumber = int.parse(widget.phoneNumber);
+        userApi.houseName = houseName;
+        userApi.streetName = streetName;
+        userApi.cityName = cityName;
+        userApi.stateName = stateName;
+        userApi.postalCode = postalCode;
+        userApi.countryName = countryName;
         Navigator.pushReplacementNamed(context, MenuScreen.id);
       }else if(data.toString() == "FAILED"){
         // UNABLE TO STORE DATA
