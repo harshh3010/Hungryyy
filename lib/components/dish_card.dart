@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
-class MostPopularCard extends StatelessWidget {
+class DishCard extends StatelessWidget {
 
-  final String name,restaurantName;
-  final double distance,deliveryCharge,rating;
-  final ImageProvider image;
-  MostPopularCard({@required this.name,@required this.restaurantName,@required this.distance,@required this.deliveryCharge,@required this.rating,@required this.image});
+  final Dish dish;
+  DishCard({@required this.dish});
 
   @override
   Widget build(BuildContext context) {
 
+    //TODO:CHANGE DISTANCE
+    double distance = 0;
     String deliveryText;
 
-    if(deliveryCharge == 0){
+    if(dish.deliveryCharge == 0){
       deliveryText = 'Free Delivery';
     }else{
-      deliveryText = 'Rs. $deliveryCharge Delivery Cost';
+      deliveryText = 'Rs. ${dish.deliveryCharge} Delivery Cost';
     }
 
     return Container(
       padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.symmetric(horizontal: 30,vertical: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
       width: double.infinity,
       height: 230,
       decoration: BoxDecoration(
@@ -42,7 +43,7 @@ class MostPopularCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: image,
+                    image: NetworkImage(dish.imageUrl),
                     fit: BoxFit.cover
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -53,7 +54,7 @@ class MostPopularCard extends StatelessWidget {
             height: 10,
           ),
           Text(
-            name,
+           dish.name,
             style: TextStyle(
               fontFamily: 'GT Eesti',
               fontSize: 20,
@@ -64,7 +65,7 @@ class MostPopularCard extends StatelessWidget {
             alignment: WrapAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                restaurantName,
+                dish.restaurantName,
                 style: TextStyle(
                   fontFamily: 'GT Eesti',
                   fontSize: 16,
@@ -81,7 +82,7 @@ class MostPopularCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '$rating',
+                    '${dish.rating}',
                     style: TextStyle(
                         fontFamily: 'GT Eesti',
                         fontSize: 12

@@ -3,6 +3,7 @@ import 'package:hungryyy/components/drawer_item.dart';
 import 'package:hungryyy/screens/home_screen.dart';
 import 'package:hungryyy/services/local_storage.dart';
 import 'package:hungryyy/utilities/constants.dart';
+import 'package:hungryyy/utilities/user_api.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'login_screen.dart';
@@ -19,10 +20,10 @@ class _MenuScreenState extends State<MenuScreen> {
 
   int _currentPageIndex = 0;
   bool _loading = false;
+  UserApi userApi = UserApi.instance;
 
   Future<void> logoutUser() async {
     await LocalStorage.removeLoginInfo();
-    await LocalStorage.removeUserDetails();
     Navigator.pushReplacementNamed(context, LoginScreen.id);
   }
 
@@ -55,11 +56,11 @@ class _MenuScreenState extends State<MenuScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
                                   Text(
-                                    'Harsh Gyanchandani',
+                                    userApi.name,
                                     style: kLabelStyle,
                                   ),
                                   Text(
-                                    'harsh.gyanchandani@gmail.com',
+                                    userApi.email,
                                     style: TextStyle(
                                       fontFamily: 'GT Eesti',
                                       color: Colors.grey.shade500,
