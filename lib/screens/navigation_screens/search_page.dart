@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/category_card.dart';
+import 'package:hungryyy/components/dish_card.dart';
 import 'package:hungryyy/components/restaurant_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/components/showcase_card.dart';
 import 'package:hungryyy/model/category.dart';
+import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/model/restaurant.dart';
 import 'package:hungryyy/screens/dish_screen.dart';
 import 'package:hungryyy/screens/restaurant_screen.dart';
@@ -44,7 +46,67 @@ class _SearchPageState extends State<SearchPage> {
   List<Restaurant> allRestaurants = [];
   bool displayCategories = true;
   bool displayRestaurants = true;
+  bool displayMostPopular = true;
+  Widget mostPopularDish = Padding(
+    padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
+    child: CircularProgressIndicator(
+      strokeWidth: 4,
+    ),
+  );
   UserApi userApi = UserApi.instance;
+
+  Future<void> loadMostPopular() async {
+    final http.Response response = await http.post(kMostPopularDishUrl,body: {
+      'city_name': userApi.cityName,
+      'state_name' : userApi.stateName,
+      'country_name' : userApi.countryName,
+    });
+    if(response.statusCode == 200 || response.statusCode == 201){
+      // Connection established
+      var data = jsonDecode(response.body.toString());
+      if(data.toString() == 'Error loading data'){
+        AlertBox.showErrorBox(context,'Unable to load popular food near you');
+        setState(() {
+          displayMostPopular = false;
+        });
+      }else{
+        Dish dish = Dish(
+          id: data[0]['id'],
+          name: data[0]['name'],
+          restaurantId: data[0]['restaurant_id'],
+          categoryId: data[0]['category_id'],
+          rating: double.parse(data[0]['rating']),
+          price: double.parse(data[0]['price']),
+          discount: double.parse(data[0]['discount']),
+          extraName: data[0]['extra_name'],
+          extraPrice: data[0]['extra_price'],
+          imageUrl: data[0]['image_url'],
+          cityName: data[0]['city_name'],
+          stateName: data[0]['state_name'],
+          countryName: data[0]['country_name'],
+          categoryName: data[0]['category_name'],
+          deliveryCharge: double.parse(data[0]['delivery_charge']),
+          restaurantName: data[0]['restaurant_name'],
+        );
+        setState(() {
+          mostPopularDish = DishCard(
+            dish: dish,
+          );
+        });
+        if(dish == null){
+          setState(() {
+            displayMostPopular = false;
+          });
+        }
+      }
+    }else{
+      // Connection not established
+      AlertBox.showErrorBox(context,'Unable to establish connection with the server');
+      setState(() {
+        displayMostPopular = false;
+      });
+    }
+  }
 
   Future<void> loadRestaurants() async {
     final http.Response response = await http.post(kLoadRestaurantsUrl,body: {
@@ -56,7 +118,10 @@ class _SearchPageState extends State<SearchPage> {
       // Connection established
       var data = jsonDecode(response.body.toString());
       if(data.toString() == 'Error loading data'){
-        AlertBox.showErrorBox(context,'Unable to load categories of food near you.');
+        AlertBox.showErrorBox(context,'Unable to load restaurants near you.');
+        setState(() {
+          displayRestaurants = false;
+        });
       }else{
         List<Widget> myList = [];
         for(Map map in data){
@@ -92,13 +157,22 @@ class _SearchPageState extends State<SearchPage> {
             restaurantsToDisplay = myList;
           });
         }
-        setState(() {
-          restaurantsToDisplay = myList;
-        });
+        if(myList.isEmpty){
+          setState(() {
+            displayRestaurants = false;
+          });
+        }else{
+          setState(() {
+            restaurantsToDisplay = myList;
+          });
+        }
       }
     }else{
       // Connection not established
       AlertBox.showErrorBox(context,'Unable to establish connection with the server');
+      setState(() {
+        displayRestaurants = false;
+      });
     }
   }
 
@@ -166,6 +240,7 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
     loadCategories();
     loadRestaurants();
+    loadMostPopular();
   }
 
   @override
@@ -320,18 +395,13 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ],
                 ):Container(),
-
-
-//TODO: ADD MOST POPULAR
-//            ShowcaseCard(
-//              label: 'Most Popular',
-//              viewAll: (){
-//                //TODO:CODE
-//              },
-//              child: DishCard(
-//                dish: Dish(),
-//              ),
-//            ),
+            ShowcaseCard(
+              label: 'Most Popular',
+              viewAll: (){
+                //TODO:CODE
+              },
+              child: mostPopularDish,
+            ),
           ],
         ),
       ),
