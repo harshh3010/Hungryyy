@@ -3,12 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/category_card.dart';
-import 'package:hungryyy/components/dish_card.dart';
 import 'package:hungryyy/components/restaurant_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/components/showcase_card.dart';
 import 'package:hungryyy/model/category.dart';
-import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/screens/dish_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
@@ -63,7 +61,14 @@ class _SearchPageState extends State<SearchPage> {
               CategoryCard(
                 category: category,
                 onPressed: (){
-                  //TODO:CODE
+                  Navigator.push(context,MaterialPageRoute(
+                    builder: (context) => DishScreen(
+                      city: userApi.cityName,
+                      state: userApi.stateName,
+                      country: userApi.countryName,
+                      categoryId: category.id,
+                    ),
+                  ));
                 },
               ),
             );
@@ -196,6 +201,7 @@ class _SearchPageState extends State<SearchPage> {
                               city: userApi.cityName,
                               state: userApi.stateName,
                               country: userApi.countryName,
+                              categoryId: 'none',
                             ),
                         ));
                       },
