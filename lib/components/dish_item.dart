@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/utilities/cart_api.dart';
 import 'package:hungryyy/utilities/constants.dart';
@@ -58,16 +59,26 @@ class _DishItemState extends State<DishItem> {
           dishCount == 0 ?
           FlatButton(
             onPressed: (){
-              setState(() {
-                dishCount = 1;
+              bool sameRestaurant = true;
+              for(var map in cartApi.cartItems){
+                if(map['restaurant_id'] != widget.dish.restaurantId){
+                  sameRestaurant = false;
+                }
+              }
+              if(sameRestaurant){
+                setState(() {
+                  dishCount = 1;
+                });
                 cartApi.cartItems.add(
-                  {
-                    'product_id' : widget.dish.id,
-                    'restaurant_id' : widget.dish.restaurantId,
-                  }
+                    {
+                      'product_id' : widget.dish.id,
+                      'restaurant_id' : widget.dish.restaurantId,
+                    }
                 );
-              });
-              widget.onDishAdded();
+                widget.onDishAdded();
+              }else{
+                AlertBox.showErrorBox(context, 'Cannot add items from two different restaurants');
+              }
             },
             child: Text(
               'Add',
@@ -112,14 +123,24 @@ class _DishItemState extends State<DishItem> {
                     setState(() {
                       if(dishCount < 10){
                         dishCount++;
-                        cartApi.cartItems.add(
-                            {
-                              'product_id' : widget.dish.id,
-                              'restaurant_id' : widget.dish.restaurantId,
-                            }
-                        );
+                        bool sameRestaurant = true;
+                        for(var map in cartApi.cartItems){
+                          if(map['restaurant_id'] != widget.dish.restaurantId){
+                            sameRestaurant = false;
+                          }
+                        }
+                        if(sameRestaurant){
+                          cartApi.cartItems.add(
+                              {
+                                'product_id' : widget.dish.id,
+                                'restaurant_id' : widget.dish.restaurantId,
+                              }
+                          );
+                          widget.onDishAdded();
+                        }else{
+                          AlertBox.showErrorBox(context, 'Cannot add items from two different restaurants');
+                        }
                       }
-                      widget.onDishAdded();
                     });
                   },
                   child: Icon(
