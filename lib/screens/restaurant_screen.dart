@@ -157,6 +157,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
   Widget build(BuildContext context) {
 
     if(!emptyCart || cartApi.cartItems.isNotEmpty){
+      String itemText;
+      if(cartApi.cartItems.length == 1)
+        itemText = '1 item';
+      else itemText = '${cartApi.cartItems.length} items';
       addedToCartBar = Positioned(
         bottom: 0,
         left: 0,
@@ -176,7 +180,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
             ),
             child: Center(
               child: Text(
-                'Added to Cart. Click to view',
+                '$itemText added to cart. Click to view',
                 style: kLabelStyle.copyWith(color: Colors.white,fontSize: 18),
               ),
             ),
