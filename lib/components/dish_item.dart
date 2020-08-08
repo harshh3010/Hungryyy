@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class DishItem extends StatefulWidget {
   @override
   _DishItemState createState() => _DishItemState();
 
-  final String name;
-  final double price;
-  DishItem({@required this.name,@required this.price});
+  final Dish dish;
+  DishItem({@required this.dish});
 }
 
 class _DishItemState extends State<DishItem> {
@@ -26,14 +26,14 @@ class _DishItemState extends State<DishItem> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Text(
-                  widget.name,
+                  widget.dish.name,
                   style: kLabelStyle.copyWith(fontSize: 18),
                 ),
                 SizedBox(
                   height: 5,
                 ),
                 Text(
-                  'Rs ${widget.price}',
+                  'Rs ${widget.dish.price}',
                   style: kLabelStyle.copyWith(fontSize: 12),
                 ),
               ],

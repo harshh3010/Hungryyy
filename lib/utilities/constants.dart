@@ -16,6 +16,7 @@ const String kLoadCategoriesUrl = "$kHostUrl/load_categories.php";
 const String kLoadDishesUrl = "$kHostUrl/load_dishes.php";
 const String kLoadRestaurantsUrl = "$kHostUrl/load_restaurants.php";
 const String kMostPopularDishUrl = "$kHostUrl/load_most_popular.php";
+const String kLoadRestaurantMenuUrl = "$kHostUrl/load_restaurant_menu.php";
 
 const TextStyle kHeadingStyle = TextStyle(
   fontFamily: 'GT Eesti',
