@@ -5,6 +5,7 @@ import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/dish_item.dart';
 import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/model/restaurant.dart';
+import 'package:hungryyy/utilities/cart_api.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,12 +17,16 @@ class RestaurantScreen extends StatefulWidget {
   RestaurantScreen({@required this.restaurant});
 }
 
-class _RestaurantScreenState extends State<RestaurantScreen>
-    with TickerProviderStateMixin {
+class _RestaurantScreenState extends State<RestaurantScreen> with TickerProviderStateMixin {
+
   AnimationController _colorAnimationController;
   AnimationController _textAnimationController;
   Animation _colorTween, _iconColorTween;
   Animation<Offset> _transTween;
+  bool emptyCart = true;
+  Widget addedToCartBar;
+  CartApi cartApi = CartApi.instance;
+
   List<Widget> categoriesToDisplay = [
     Container(
       child: Center(
@@ -84,6 +89,16 @@ class _RestaurantScreenState extends State<RestaurantScreen>
             dishesToDisplay.add(
               DishItem(
                 dish: dish,
+                onDishAdded: (){
+                  setState(() {
+                    emptyCart = false;
+                  });
+                },
+                onDishRemoved: (){
+                  setState(() {
+                    emptyCart = true;
+                  });
+                },
               ),
             );
           }
@@ -140,6 +155,38 @@ class _RestaurantScreenState extends State<RestaurantScreen>
 
   @override
   Widget build(BuildContext context) {
+
+    if(!emptyCart || cartApi.cartItems.isNotEmpty){
+      addedToCartBar = Positioned(
+        bottom: 0,
+        left: 0,
+        child: GestureDetector(
+          onTap: (){
+            //TODO:CODE
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+            decoration: BoxDecoration(
+              color: kColorRed,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
+              ),
+            ),
+            child: Center(
+              child: Text(
+                'Added to Cart. Click to view',
+                style: kLabelStyle.copyWith(color: Colors.white,fontSize: 18),
+              ),
+            ),
+          ),
+        ),
+      );
+    }else{
+      addedToCartBar = Container();
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: NotificationListener<ScrollNotification>(
@@ -247,6 +294,7 @@ class _RestaurantScreenState extends State<RestaurantScreen>
                   ),
                 ),
               ),
+              addedToCartBar,
             ],
           ),
         ),

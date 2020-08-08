@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hungryyy/model/dish.dart';
+import 'package:hungryyy/utilities/cart_api.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class DishItem extends StatefulWidget {
@@ -7,15 +8,30 @@ class DishItem extends StatefulWidget {
   _DishItemState createState() => _DishItemState();
 
   final Dish dish;
-  DishItem({@required this.dish});
+  final Function onDishAdded,onDishRemoved;
+  DishItem({@required this.dish,@required this.onDishAdded,@required this.onDishRemoved});
 }
 
 class _DishItemState extends State<DishItem> {
 
   int dishCount = 0;
+  CartApi cartApi = CartApi.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    for(var map in cartApi.cartItems){
+      if(map['product_id'] == widget.dish.id && map['restaurant_id'] == widget.dish.restaurantId){
+        setState(() {
+          dishCount++;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -44,7 +60,14 @@ class _DishItemState extends State<DishItem> {
             onPressed: (){
               setState(() {
                 dishCount = 1;
+                cartApi.cartItems.add(
+                  {
+                    'product_id' : widget.dish.id,
+                    'restaurant_id' : widget.dish.restaurantId,
+                  }
+                );
               });
+              widget.onDishAdded();
             },
             child: Text(
               'Add',
@@ -60,6 +83,15 @@ class _DishItemState extends State<DishItem> {
                     setState(() {
                       if(0 <= dishCount){
                         dishCount--;
+                        for(var map in cartApi.cartItems){
+                          if(map['product_id'] == widget.dish.id && map['restaurant_id'] == widget.dish.restaurantId){
+                              cartApi.cartItems.remove(map);
+                              break;
+                          }
+                        }
+                        if(dishCount == 0){
+                          widget.onDishRemoved();
+                        }
                       }
                     });
                   },
@@ -80,7 +112,14 @@ class _DishItemState extends State<DishItem> {
                     setState(() {
                       if(dishCount < 10){
                         dishCount++;
+                        cartApi.cartItems.add(
+                            {
+                              'product_id' : widget.dish.id,
+                              'restaurant_id' : widget.dish.restaurantId,
+                            }
+                        );
                       }
+                      widget.onDishAdded();
                     });
                   },
                   child: Icon(
