@@ -3,11 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/category_card.dart';
+import 'package:hungryyy/components/dish_card.dart';
 import 'package:hungryyy/components/restaurant_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/components/showcase_card.dart';
 import 'package:hungryyy/model/category.dart';
+import 'package:hungryyy/model/dish.dart';
+import 'package:hungryyy/model/restaurant.dart';
 import 'package:hungryyy/screens/dish_screen.dart';
+import 'package:hungryyy/screens/all_restaurants_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:hungryyy/utilities/user_api.dart';
@@ -22,6 +26,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
 
+  //TODO:LOAD CURRENT POSITION
   List<Widget> categoriesToDisplay = [
     Padding(
       padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
@@ -30,12 +35,148 @@ class _SearchPageState extends State<SearchPage> {
       ),
     ),
   ];
+  List<Widget> restaurantsToDisplay = [
+    Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
+      child: CircularProgressIndicator(
+        strokeWidth: 4,
+      ),
+    ),
+  ];
+  List<Restaurant> allRestaurants = [];
   bool displayCategories = true;
+  bool displayRestaurants = true;
+  bool displayMostPopular = true;
+  Widget mostPopularDish = Padding(
+    padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
+    child: CircularProgressIndicator(
+      strokeWidth: 4,
+    ),
+  );
   UserApi userApi = UserApi.instance;
 
-  Future<void> loadCategories() async {
+  Future<void> loadMostPopular() async {
+    final http.Response response = await http.post(kMostPopularDishUrl,body: {
+      'city_name': userApi.cityName,
+      'state_name' : userApi.stateName,
+      'country_name' : userApi.countryName,
+    });
+    if(response.statusCode == 200 || response.statusCode == 201){
+      // Connection established
+      var data = jsonDecode(response.body.toString());
+      if(data.toString() == 'Error loading data'){
+        AlertBox.showErrorBox(context,'Unable to load popular food near you');
+        setState(() {
+          displayMostPopular = false;
+        });
+      }else{
+        Dish dish = Dish(
+          id: data[0]['id'],
+          name: data[0]['name'],
+          restaurantId: data[0]['restaurant_id'],
+          categoryId: data[0]['category_id'],
+          rating: double.parse(data[0]['rating']),
+          price: double.parse(data[0]['price']),
+          discount: double.parse(data[0]['discount']),
+          extraName: data[0]['extra_name'],
+          extraPrice: data[0]['extra_price'],
+          imageUrl: data[0]['image_url'],
+          cityName: data[0]['city_name'],
+          stateName: data[0]['state_name'],
+          countryName: data[0]['country_name'],
+          categoryName: data[0]['category_name'],
+          deliveryCharge: double.parse(data[0]['delivery_charge']),
+          restaurantName: data[0]['restaurant_name'],
+        );
+        setState(() {
+          mostPopularDish = DishCard(
+            dish: dish,
+          );
+        });
+        if(dish == null){
+          setState(() {
+            displayMostPopular = false;
+          });
+        }
+      }
+    }else{
+      // Connection not established
+      AlertBox.showErrorBox(context,'Unable to establish connection with the server');
+      setState(() {
+        displayMostPopular = false;
+      });
+    }
+  }
 
-    //TODO:LOAD CURRENT POSITION
+  Future<void> loadRestaurants() async {
+    final http.Response response = await http.post(kLoadRestaurantsUrl,body: {
+      'city_name': userApi.cityName,
+      'state_name' : userApi.stateName,
+      'country_name' : userApi.countryName,
+    });
+    if(response.statusCode == 200 || response.statusCode == 201){
+      // Connection established
+      var data = jsonDecode(response.body.toString());
+      if(data.toString() == 'Error loading data'){
+        AlertBox.showErrorBox(context,'Unable to load restaurants near you.');
+        setState(() {
+          displayRestaurants = false;
+        });
+      }else{
+        List<Widget> myList = [];
+        for(Map map in data){
+          Restaurant restaurant = Restaurant(
+            id: map['id'],
+            name: map['name'],
+            streetName: map['street_name'],
+            cityName: map['city_name'],
+            stateName: map['state_name'],
+            postalCode: map['postal_code'],
+            countryName: map['country_name'],
+            phoneNumber: map['phone_number'],
+            latitude: double.parse(map['latitude']),
+            longitude: double.parse(map['longitude']),
+            rating: double.parse(map['rating']),
+            imageUrl: map['image_url'],
+            deliveryCharge: double.parse(map['delivery_charge']),
+          );
+          allRestaurants.add(restaurant);
+        }
+        int n = 0;
+        for(var restaurant in allRestaurants){
+          n++;
+          if(n == 5){
+            break;
+          }
+          myList.add(
+            RestaurantCard(
+              restaurant: restaurant,
+            ),
+          );
+          setState(() {
+            restaurantsToDisplay = myList;
+          });
+        }
+        if(myList.isEmpty){
+          setState(() {
+            displayRestaurants = false;
+          });
+        }else{
+          setState(() {
+            restaurantsToDisplay = myList;
+          });
+        }
+      }
+    }else{
+      // Connection not established
+      AlertBox.showErrorBox(context,'Unable to establish connection with the server');
+      setState(() {
+        displayRestaurants = false;
+      });
+    }
+  }
+
+  Future<void> loadCategories() async {
     final http.Response response = await http.post(kLoadCategoriesUrl,body: {
       'city_name': userApi.cityName,
       'state_name' : userApi.stateName,
@@ -67,6 +208,7 @@ class _SearchPageState extends State<SearchPage> {
                       state: userApi.stateName,
                       country: userApi.countryName,
                       categoryId: category.id,
+                      popular: 'NO',
                     ),
                   ));
                 },
@@ -98,6 +240,8 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     loadCategories();
+    loadRestaurants();
+    loadMostPopular();
   }
 
   @override
@@ -202,6 +346,7 @@ class _SearchPageState extends State<SearchPage> {
                               state: userApi.stateName,
                               country: userApi.countryName,
                               categoryId: 'none',
+                              popular: 'NO',
                             ),
                         ));
                       },
@@ -221,52 +366,52 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 )
                 : Container(),
+            displayRestaurants ?
+                Column(
+                  children: <Widget>[
+                    ShowcaseCard(
+                      label: 'Near You',
+                      viewAll: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AllRestaurantsScreen(restaurants: allRestaurants,),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 270,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: restaurantsToDisplay,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                  ],
+                ):Container(),
             ShowcaseCard(
-              label: 'Near You',
+              label: 'Most Popular',
               viewAll: (){
-                //TODO:CODE
-              },
-              child: Container(
-                height: 270,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 20,
-                      ),
-                      RestaurantCard(
-                        name: 'Pizza Hut',
-                        deliveryCharge: 0,
-                        distance: 2,
-                        image: AssetImage('images/dish.jpg'),
-                        rating: 4.5,
-                      ),
-                      RestaurantCard(
-                        name: 'Manohar Dairy',
-                        deliveryCharge: 50,
-                        distance: 5,
-                        image: AssetImage('images/dish.jpg'),
-                        rating: 4.7,
-                      ),
-                    ],
+                Navigator.push(context,MaterialPageRoute(
+                  builder: (context) => DishScreen(
+                    city: userApi.cityName,
+                    state: userApi.stateName,
+                    country: userApi.countryName,
+                    categoryId: 'none',
+                    popular: 'YES',
                   ),
-                ),
-              ),
+                ));
+              },
+              child: mostPopularDish,
             ),
-            SizedBox(
-              height: 15,
-            ),
-//TODO: ADD MOST POPULAR
-//            ShowcaseCard(
-//              label: 'Most Popular',
-//              viewAll: (){
-//                //TODO:CODE
-//              },
-//              child: DishCard(
-//                dish: Dish(),
-//              ),
-//            ),
           ],
         ),
       ),
