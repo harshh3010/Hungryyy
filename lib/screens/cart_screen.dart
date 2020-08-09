@@ -5,6 +5,7 @@ import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/dish_item.dart';
 import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/model/restaurant.dart';
+import 'package:hungryyy/screens/billing_screen.dart';
 import 'package:hungryyy/utilities/cart_api.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
@@ -27,6 +28,7 @@ class _CartScreenState extends State<CartScreen> {
   List<Widget> addedDishes = [];
   bool _loading = false;
   Widget restaurantCard;
+  Restaurant restaurant;
 
   Future<void> setupCart() async {
     await openRestaurant();
@@ -52,7 +54,7 @@ class _CartScreenState extends State<CartScreen> {
         });
         AlertBox.showErrorBox(context,'Unable to get the restaurant information');
       }else{
-        Restaurant restaurant = Restaurant(
+        restaurant = Restaurant(
           id: data[0]['id'],
           name: data[0]['name'],
           streetName: data[0]['street_name'],
@@ -196,6 +198,7 @@ class _CartScreenState extends State<CartScreen> {
           ),
           body: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Container(child: restaurantCard),
                 Padding(
@@ -204,7 +207,33 @@ class _CartScreenState extends State<CartScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: addedDishes,
                   ),
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: MaterialButton(
+                    onPressed: (){
+                      setState(() {
+                        cartApi.cartItems = [];
+                        addedDishes = [];
+                        restaurantCard = Center(
+                          child: Text(
+                            'Cart is empty',
+                            style: kLabelStyle.copyWith(color: Colors.grey.shade500),
+                          ),
+                        );
+                      });
+                    },
+                    padding: EdgeInsets.all(15),
+                    color: kColorYellow,
+                    child: Text(
+                      'Remove All Items',
+                      style: TextStyle(
+                        fontFamily: 'GT Eesti',
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -213,7 +242,7 @@ class _CartScreenState extends State<CartScreen> {
               if(cartApi.cartItems.isEmpty){
                 AlertBox.showErrorBox(context,"Cart is empty");
               }else{
-                //TODO:CODE
+               Navigator.push(context,MaterialPageRoute(builder: (context) => BillingScreen(restaurant: restaurant)));
               }
             },
             child: Container(
