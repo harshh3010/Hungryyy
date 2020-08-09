@@ -5,23 +5,32 @@ import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/dish_item.dart';
 import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/model/restaurant.dart';
+import 'package:hungryyy/utilities/cart_api.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
+
+import 'cart_screen.dart';
 
 class RestaurantScreen extends StatefulWidget {
   @override
   _RestaurantScreenState createState() => _RestaurantScreenState();
 
   final Restaurant restaurant;
-  RestaurantScreen({@required this.restaurant});
+  final Dish specificDish;
+  RestaurantScreen({@required this.restaurant,this.specificDish});
 }
 
-class _RestaurantScreenState extends State<RestaurantScreen>
-    with TickerProviderStateMixin {
+class _RestaurantScreenState extends State<RestaurantScreen> with TickerProviderStateMixin {
+
   AnimationController _colorAnimationController;
   AnimationController _textAnimationController;
   Animation _colorTween, _iconColorTween;
   Animation<Offset> _transTween;
+  bool emptyCart = true;
+  Widget addedToCartBar;
+  CartApi cartApi = CartApi.instance;
+  Widget specificDishToDisplay;
+
   List<Widget> categoriesToDisplay = [
     Container(
       child: Center(
@@ -84,6 +93,16 @@ class _RestaurantScreenState extends State<RestaurantScreen>
             dishesToDisplay.add(
               DishItem(
                 dish: dish,
+                onDishAdded: (){
+                  setState(() {
+                    emptyCart = false;
+                  });
+                },
+                onDishRemoved: (){
+                  setState(() {
+                    emptyCart = true;
+                  });
+                },
               ),
             );
           }
@@ -140,6 +159,81 @@ class _RestaurantScreenState extends State<RestaurantScreen>
 
   @override
   Widget build(BuildContext context) {
+
+    if(widget.specificDish != null){
+      specificDishToDisplay = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            'Order Now',
+            style: kItemStyle.copyWith(fontSize: 30),
+          ),
+          DishItem(
+            dish: widget.specificDish,
+            onDishAdded: (){
+              setState(() {
+                emptyCart = false;
+              });
+            },
+            onDishRemoved: (){
+              setState(() {
+                emptyCart = true;
+              });
+            },
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            'More from',
+            style: kItemStyle,
+          ),
+          Text(
+            widget.restaurant.name,
+            style: kItemStyle.copyWith(fontSize: 30),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+        ],
+      );
+    }
+
+    if(!emptyCart || cartApi.cartItems.isNotEmpty){
+      String itemText;
+      if(cartApi.cartItems.length == 1)
+        itemText = '1 item';
+      else itemText = '${cartApi.cartItems.length} items';
+      addedToCartBar = Positioned(
+        bottom: 0,
+        left: 0,
+        child: GestureDetector(
+          onTap: (){
+            Navigator.pushReplacementNamed(context,CartScreen.id);
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+            decoration: BoxDecoration(
+              color: kColorRed,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
+              ),
+            ),
+            child: Center(
+              child: Text(
+                '$itemText added to cart. Click to view',
+                style: kLabelStyle.copyWith(color: Colors.white,fontSize: 18),
+              ),
+            ),
+          ),
+        ),
+      );
+    }else{
+      addedToCartBar = Container();
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: NotificationListener<ScrollNotification>(
@@ -190,7 +284,14 @@ class _RestaurantScreenState extends State<RestaurantScreen>
                           EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: categoriesToDisplay,
+                        children: <Widget>[
+                          Container(
+                            child: specificDishToDisplay,
+                          ),
+                          Column(
+                            children: categoriesToDisplay,
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -239,7 +340,7 @@ class _RestaurantScreenState extends State<RestaurantScreen>
                           },
                           padding: EdgeInsets.all(10),
                           icon: Icon(
-                            Icons.shopping_cart,
+                            Icons.search,
                           ),
                         ),
                       ),
@@ -247,6 +348,7 @@ class _RestaurantScreenState extends State<RestaurantScreen>
                   ),
                 ),
               ),
+              addedToCartBar,
             ],
           ),
         ),

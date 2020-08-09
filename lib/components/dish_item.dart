@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/model/dish.dart';
+import 'package:hungryyy/utilities/cart_api.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class DishItem extends StatefulWidget {
@@ -7,20 +9,47 @@ class DishItem extends StatefulWidget {
   _DishItemState createState() => _DishItemState();
 
   final Dish dish;
-  DishItem({@required this.dish});
+  final Function onDishAdded,onDishRemoved;
+  DishItem({@required this.dish,@required this.onDishAdded,@required this.onDishRemoved});
 }
 
 class _DishItemState extends State<DishItem> {
 
   int dishCount = 0;
+  CartApi cartApi = CartApi.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    for(var map in cartApi.cartItems){
+      if(map['product_id'] == widget.dish.id && map['restaurant_id'] == widget.dish.restaurantId){
+        setState(() {
+          dishCount++;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(widget.dish.imageUrl),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.all((Radius.circular(10))),
+            ),
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -42,9 +71,27 @@ class _DishItemState extends State<DishItem> {
           dishCount == 0 ?
           FlatButton(
             onPressed: (){
-              setState(() {
-                dishCount = 1;
-              });
+              bool sameRestaurant = true;
+              for(var map in cartApi.cartItems){
+                if(map['restaurant_id'] != widget.dish.restaurantId){
+                  sameRestaurant = false;
+                }
+              }
+              if(sameRestaurant){
+                setState(() {
+                  dishCount = 1;
+                });
+                cartApi.cartItems.add(
+                    {
+                      'product_id' : widget.dish.id,
+                      'restaurant_id' : widget.dish.restaurantId,
+                      'product' : widget.dish,
+                    }
+                );
+                widget.onDishAdded();
+              }else{
+                AlertBox.showErrorBox(context, 'Cannot add items from two different restaurants');
+              }
             },
             child: Text(
               'Add',
@@ -60,6 +107,15 @@ class _DishItemState extends State<DishItem> {
                     setState(() {
                       if(0 <= dishCount){
                         dishCount--;
+                        for(var map in cartApi.cartItems){
+                          if(map['product_id'] == widget.dish.id && map['restaurant_id'] == widget.dish.restaurantId){
+                              cartApi.cartItems.remove(map);
+                              break;
+                          }
+                        }
+                        if(dishCount == 0){
+                          widget.onDishRemoved();
+                        }
                       }
                     });
                   },
@@ -80,6 +136,24 @@ class _DishItemState extends State<DishItem> {
                     setState(() {
                       if(dishCount < 10){
                         dishCount++;
+                        bool sameRestaurant = true;
+                        for(var map in cartApi.cartItems){
+                          if(map['restaurant_id'] != widget.dish.restaurantId){
+                            sameRestaurant = false;
+                          }
+                        }
+                        if(sameRestaurant){
+                          cartApi.cartItems.add(
+                              {
+                                'product_id' : widget.dish.id,
+                                'restaurant_id' : widget.dish.restaurantId,
+                                'product' : widget.dish,
+                              }
+                          );
+                          widget.onDishAdded();
+                        }else{
+                          AlertBox.showErrorBox(context, 'Cannot add items from two different restaurants');
+                        }
                       }
                     });
                   },
