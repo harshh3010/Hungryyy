@@ -38,6 +38,18 @@ class _DishItemState extends State<DishItem> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(widget.dish.imageUrl),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.all((Radius.circular(10))),
+            ),
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

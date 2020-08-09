@@ -5,8 +5,12 @@ import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/dish_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/model/dish.dart';
+import 'package:hungryyy/model/restaurant.dart';
+import 'package:hungryyy/screens/restaurant_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:hungryyy/utilities/user_api.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class DishScreen extends StatefulWidget {
   @override
@@ -30,6 +34,57 @@ class _DishScreenState extends State<DishScreen> {
       ),
     ),
   ];
+  UserApi userApi = UserApi.instance;
+  bool _loading = false;
+
+  Future<void> openRestaurant(Dish dish) async {
+    setState(() {
+      _loading = true;
+    });
+    final http.Response response = await http.post(kOpenRestaurantUrl,body: {
+      'city_name': userApi.cityName,
+      'state_name' : userApi.stateName,
+      'country_name' : userApi.countryName,
+      'id' : dish.restaurantId,
+    });
+    if(response.statusCode == 200 || response.statusCode == 201){
+      // Connection established
+      var data = jsonDecode(response.body.toString());
+      if(data.toString() == 'Error loading data'){
+        setState(() {
+          _loading = false;
+        });
+        AlertBox.showErrorBox(context,'Unable to get the restaurant information');
+      }else{
+        Restaurant restaurant = Restaurant(
+          id: data[0]['id'],
+          name: data[0]['name'],
+          streetName: data[0]['street_name'],
+          cityName: data[0]['city_name'],
+          stateName: data[0]['state_name'],
+          postalCode: data[0]['postal_code'],
+          countryName: data[0]['country_name'],
+          phoneNumber: data[0]['phone_number'],
+          latitude: double.parse(data[0]['latitude']),
+          longitude: double.parse(data[0]['longitude']),
+          rating: double.parse(data[0]['rating']),
+          imageUrl: data[0]['image_url'],
+          deliveryCharge: double.parse(data[0]['delivery_charge']),
+        );
+        setState(() {
+          _loading = false;
+        });
+        //TODO:ADD DISH
+        Navigator.push(context, MaterialPageRoute(builder: (context) => RestaurantScreen(restaurant: restaurant,specificDish: dish)));
+      }
+    }else{
+      // Connection not established
+      setState(() {
+        _loading = false;
+      });
+      AlertBox.showErrorBox(context,'Unable to establish connection with the server');
+    }
+  }
 
   Future<void> loadDishes() async {
     final http.Response response = await http.post(kLoadDishesUrl, body: {
@@ -68,6 +123,9 @@ class _DishScreenState extends State<DishScreen> {
           myList.add(
             DishCard(
               dish: dish,
+              onPressed: (){
+                openRestaurant(dish);
+              },
             ),
           );
           setState(() {
@@ -93,70 +151,75 @@ class _DishScreenState extends State<DishScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80.0),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                padding: EdgeInsets.all(10),
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: kColorBlack,
-                ),
-              ),
-            ),
-            centerTitle: true,
-            title: Padding(
-              padding: const EdgeInsets.only(top: 27),
-              child: Text(
-                'HUNGRYYY',
-                style: kHeadingStyle,
-              ),
-            ),
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
+    return ModalProgressHUD(
+      inAsyncCall: _loading,
+      color: Colors.white,
+      opacity: .5,
+      child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(80.0),
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              leading: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
                 child: IconButton(
                   onPressed: () {
-                    //TODO:CODE
+                    Navigator.pop(context);
                   },
                   padding: EdgeInsets.all(10),
                   icon: Icon(
-                    Icons.shopping_cart,
+                    Icons.arrow_back_ios,
                     color: kColorBlack,
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-        body: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
-              child: SearchBox(
-                hint: 'Search Food',
-                onChanged: (value) {
-                  //TODO:CODE
-                },
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: dishesToDisplay,
+              centerTitle: true,
+              title: Padding(
+                padding: const EdgeInsets.only(top: 27),
+                child: Text(
+                  'HUNGRYYY',
+                  style: kHeadingStyle,
                 ),
               ),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
+                  child: IconButton(
+                    onPressed: () {
+                      //TODO:CODE
+                    },
+                    padding: EdgeInsets.all(10),
+                    icon: Icon(
+                      Icons.shopping_cart,
+                      color: kColorBlack,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ));
+          ),
+          body: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+                child: SearchBox(
+                  hint: 'Search Food',
+                  onChanged: (value) {
+                    //TODO:CODE
+                  },
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: dishesToDisplay,
+                  ),
+                ),
+              ),
+            ],
+          )),
+    );
   }
 }

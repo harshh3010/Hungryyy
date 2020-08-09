@@ -14,7 +14,8 @@ class RestaurantScreen extends StatefulWidget {
   _RestaurantScreenState createState() => _RestaurantScreenState();
 
   final Restaurant restaurant;
-  RestaurantScreen({@required this.restaurant});
+  final Dish specificDish;
+  RestaurantScreen({@required this.restaurant,this.specificDish});
 }
 
 class _RestaurantScreenState extends State<RestaurantScreen> with TickerProviderStateMixin {
@@ -26,6 +27,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
   bool emptyCart = true;
   Widget addedToCartBar;
   CartApi cartApi = CartApi.instance;
+  Widget specificDishToDisplay;
 
   List<Widget> categoriesToDisplay = [
     Container(
@@ -156,6 +158,45 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
   @override
   Widget build(BuildContext context) {
 
+    if(widget.specificDish != null){
+      specificDishToDisplay = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            'Order Now',
+            style: kItemStyle.copyWith(fontSize: 30),
+          ),
+          DishItem(
+            dish: widget.specificDish,
+            onDishAdded: (){
+              setState(() {
+                emptyCart = false;
+              });
+            },
+            onDishRemoved: (){
+              setState(() {
+                emptyCart = true;
+              });
+            },
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            'More from',
+            style: kItemStyle,
+          ),
+          Text(
+            widget.restaurant.name,
+            style: kItemStyle.copyWith(fontSize: 30),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+        ],
+      );
+    }
+
     if(!emptyCart || cartApi.cartItems.isNotEmpty){
       String itemText;
       if(cartApi.cartItems.length == 1)
@@ -241,7 +282,14 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
                           EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: categoriesToDisplay,
+                        children: <Widget>[
+                          Container(
+                            child: specificDishToDisplay,
+                          ),
+                          Column(
+                            children: categoriesToDisplay,
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -290,7 +338,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
                           },
                           padding: EdgeInsets.all(10),
                           icon: Icon(
-                            Icons.shopping_cart,
+                            Icons.search,
                           ),
                         ),
                       ),
