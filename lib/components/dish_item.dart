@@ -85,6 +85,7 @@ class _DishItemState extends State<DishItem> {
                     {
                       'product_id' : widget.dish.id,
                       'restaurant_id' : widget.dish.restaurantId,
+                      'product' : widget.dish,
                     }
                 );
                 widget.onDishAdded();
@@ -146,6 +147,7 @@ class _DishItemState extends State<DishItem> {
                               {
                                 'product_id' : widget.dish.id,
                                 'restaurant_id' : widget.dish.restaurantId,
+                                'product' : widget.dish,
                               }
                           );
                           widget.onDishAdded();

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/drawer_item.dart';
 import 'package:hungryyy/screens/home_screen.dart';
@@ -38,12 +40,17 @@ class _MenuScreenState extends State<MenuScreen> {
           opacity: .5,
           child: Material(
             child: Container(
-              color: Colors.white,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/logo.png'),
+                  fit: BoxFit.fitHeight,
+                  colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.95),BlendMode.srcATop),
+                )
+              ),
               height: double.infinity,
               width: double.infinity,
               child: SafeArea(
                 child: Container(
-                  color: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(30.0),
                     child: Column(

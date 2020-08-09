@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 import 'package:hungryyy/utilities/user_api.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+import 'cart_screen.dart';
+
 class DishScreen extends StatefulWidget {
   @override
   _DishScreenState createState() => _DishScreenState();
@@ -187,7 +189,7 @@ class _DishScreenState extends State<DishScreen> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
                   child: IconButton(
                     onPressed: () {
-                      //TODO:CODE
+                      Navigator.pushReplacementNamed(context,CartScreen.id);
                     },
                     padding: EdgeInsets.all(10),
                     icon: Icon(

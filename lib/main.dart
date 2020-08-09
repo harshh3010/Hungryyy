@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hungryyy/screens/cart_screen.dart';
 import 'package:hungryyy/screens/details_screen.dart';
 import 'package:hungryyy/screens/login_screen.dart';
 import 'package:hungryyy/screens/menu_screen.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         RegistrationScreen.id : (context) => RegistrationScreen(),
         DetailsScreen.id : (context) => DetailsScreen(),
         MenuScreen.id : (context) => MenuScreen(),
+        CartScreen.id : (context) => CartScreen(),
       },
     );
   }

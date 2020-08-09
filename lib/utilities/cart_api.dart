@@ -7,7 +7,7 @@ class CartApi {
   static final CartApi _instance = CartApi._privateConstructor();
   static CartApi get instance => _instance;
 
-  List<Map<String,String>> cartItems = [];
+  List<Map> cartItems = [];
 
   CartApi(this.cartItems);
 

@@ -9,6 +9,8 @@ import 'package:hungryyy/utilities/cart_api.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 
+import 'cart_screen.dart';
+
 class RestaurantScreen extends StatefulWidget {
   @override
   _RestaurantScreenState createState() => _RestaurantScreenState();
@@ -207,7 +209,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
         left: 0,
         child: GestureDetector(
           onTap: (){
-            //TODO:CODE
+            Navigator.pushReplacementNamed(context,CartScreen.id);
           },
           child: Container(
             width: MediaQuery.of(context).size.width,

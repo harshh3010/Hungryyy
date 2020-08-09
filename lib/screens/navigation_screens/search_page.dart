@@ -10,6 +10,7 @@ import 'package:hungryyy/components/showcase_card.dart';
 import 'package:hungryyy/model/category.dart';
 import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/model/restaurant.dart';
+import 'package:hungryyy/screens/cart_screen.dart';
 import 'package:hungryyy/screens/dish_screen.dart';
 import 'package:hungryyy/screens/all_restaurants_screen.dart';
 import 'package:hungryyy/screens/restaurant_screen.dart';
@@ -347,11 +348,11 @@ class _SearchPageState extends State<SearchPage> {
                 padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
                 child: IconButton(
                   onPressed: () {
-                    //TODO:CODE
+                    Navigator.pushNamed(context,CartScreen.id);
                   },
                   padding: EdgeInsets.all(10),
                   icon: Icon(
-                    Icons.person_outline,
+                    Icons.shopping_cart,
                     color: kColorBlack,
                   ),
                 ),
