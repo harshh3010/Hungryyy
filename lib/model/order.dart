@@ -13,5 +13,4 @@ class Order{
       this.customerName, this.fromLat, this.toLat, this.fromLong, this.toLong,
       this.price, this.timestamp,this.cartItems});
 
-
 }
