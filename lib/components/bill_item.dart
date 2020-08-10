@@ -19,7 +19,7 @@ class BillItem extends StatelessWidget {
           ),
           Text(
             valueText,
-            style: kLabelStyle,
+            style: kLabelStyle.copyWith(fontSize: 16,color: kColorRed),
           ),
         ],
       ),

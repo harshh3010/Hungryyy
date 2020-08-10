@@ -17,9 +17,11 @@ class UserApi {
   String stateName;
   String postalCode;
   String countryName;
+  double latitude;
+  double longitude;
 
   UserApi({this.id, this.email, this.name, this.phoneNumber, this.houseName,
       this.streetName, this.cityName, this.stateName, this.postalCode,
-      this.countryName});
+      this.countryName,this.latitude,this.longitude});
 
 }
