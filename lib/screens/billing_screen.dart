@@ -53,6 +53,7 @@ class _BillingScreenState extends State<BillingScreen> {
       'price' : (_finalAmount).toString(),
       'timestamp' : (DateTime.now().millisecondsSinceEpoch).toString(),
       'cart_items' : cartItems,
+      'status' : 'confirmed',
     });
     if(response.statusCode == 200 || response.statusCode == 201){
       // Connection established

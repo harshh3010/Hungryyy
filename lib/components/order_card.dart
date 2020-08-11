@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hungryyy/model/order.dart';
 import 'package:hungryyy/utilities/constants.dart';
+import 'package:intl/intl.dart';
 
 class OrderCard extends StatelessWidget {
 
@@ -23,6 +24,10 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(int.parse(order.timestamp));
+    String formattedDate = DateFormat('MMMM dd, yyyy – kk:mm').format(dateTime);
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10,horizontal: 30),
       padding: EdgeInsets.all(20),
@@ -40,6 +45,13 @@ class OrderCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          Text(
+            formattedDate,
+            style: kLabelStyle.copyWith(color: kColorRed,fontSize: 16),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Text(
             order.restaurantName,
             style: kLabelStyle,
@@ -61,6 +73,26 @@ class OrderCard extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
+          order.status == 'delivered' ?
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: MaterialButton(
+                      onPressed: cancelOrder,
+                      padding: EdgeInsets.all(10),
+                      color: kColorYellow,
+                      child: Text(
+                        'Remove from list',
+                        style: TextStyle(
+                          fontFamily: 'GT Eesti',
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+              :
           Row(
             children: <Widget>[
               Expanded(
