@@ -38,7 +38,7 @@ lib/generated_plugin_registrant.dart
 
 # Generate your own API key :P
 # Manifest  File
-/android/app/src/main/AndroidManifest.xml
+android/app/src/main/AndroidManifest.xml
 
 # AppDelegate File IOS
-/ios/Runner/AppDelegate.m
+ios/Runner/AppDelegate.m
