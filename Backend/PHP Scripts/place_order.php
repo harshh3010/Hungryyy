@@ -20,8 +20,9 @@ $to_long = mysqli_real_escape_string($connect, $_POST['to_long']);
 $price = mysqli_real_escape_string($connect, $_POST['price']);
 $timestamp = mysqli_real_escape_string($connect, $_POST['timestamp']);
 $cart_items = mysqli_real_escape_string($connect, $_POST['cart_items']);
+$status = mysqli_real_escape_string($connect, $_POST['status']);
 
-$result = mysqli_query($connect,"INSERT INTO orders(id,restaurant_id,restaurant_name,customer_email,customer_contact,to_lat,to_long,price,timestamp,cart_items) VALUES ('$id','$restaurant_id','$restaurant_name','$customer_email',$customer_contact,$to_lat,$to_long,$price,'$timestamp','$cart_items')");
+$result = mysqli_query($connect,"INSERT INTO orders(id,restaurant_id,restaurant_name,customer_email,customer_contact,to_lat,to_long,price,timestamp,cart_items,status) VALUES ('$id','$restaurant_id','$restaurant_name','$customer_email',$customer_contact,$to_lat,$to_long,$price,'$timestamp','$cart_items','$status')");
 if($result>0){
     echo json_encode('SUCCESS');
 }else{
