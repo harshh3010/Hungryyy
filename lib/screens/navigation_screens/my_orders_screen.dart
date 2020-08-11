@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/model/order.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class MyOrdersScreen extends StatefulWidget {
@@ -32,6 +33,15 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
           ),
         ),
       ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            //TODO:ADD ORDER DISPLAY
+          ],
+        ),
+      ),
     );
   }
 }
+
+
