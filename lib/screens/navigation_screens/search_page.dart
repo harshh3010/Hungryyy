@@ -13,6 +13,7 @@ import 'package:hungryyy/model/restaurant.dart';
 import 'package:hungryyy/screens/cart_screen.dart';
 import 'package:hungryyy/screens/dish_screen.dart';
 import 'package:hungryyy/screens/all_restaurants_screen.dart';
+import 'package:hungryyy/screens/navigation_screens/my_address_screen.dart';
 import 'package:hungryyy/screens/restaurant_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
@@ -319,28 +320,44 @@ class _SearchPageState extends State<SearchPage> {
             centerTitle: false,
             title: Padding(
               padding: const EdgeInsets.only(top: 27),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Deliver To',
-                    style: TextStyle(
-                      fontFamily: 'GT Eesti',
-                      color: kColorBlack,
-                      fontSize: 10,
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyAddressScreen(
+                      iconButton: IconButton(
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                        padding: EdgeInsets.all(10),
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: kColorBlack,
+                        ),
+                      ),
+                  )));
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Deliver To',
+                      style: TextStyle(
+                        fontFamily: 'GT Eesti',
+                        color: kColorBlack,
+                        fontSize: 10,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${userApi.streetName}, ${userApi.cityName} >',
-                    style: TextStyle(
-                      fontFamily: 'GT Eesti',
-                      color: Colors.grey.shade500,
-                      fontSize: 14,
+                    Text(
+                      '${userApi.streetName}, ${userApi.cityName} >',
+                      style: TextStyle(
+                        fontFamily: 'GT Eesti',
+                        color: Colors.grey.shade500,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             actions: <Widget>[
