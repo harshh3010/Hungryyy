@@ -13,7 +13,7 @@
         android:label="hungryyy"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDO3Ufdxe2fOSn0cwkuRsAMDqiscLxXXVU"/>
+            android:value="<ENTER YOU API KEY HERE>"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
