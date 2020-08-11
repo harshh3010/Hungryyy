@@ -25,4 +25,27 @@ class AlertBox{
       ],
     ).show();
   }
+
+  static Future<void> showSuccessBox(BuildContext context,String text,String title) async {
+    await Alert(
+      context: context,
+      type: AlertType.success,
+      title: title,
+      desc: text,
+      buttons: [
+        DialogButton(
+          color: kColorYellow,
+          child: Text(
+            "Okay",
+            style: TextStyle(
+                fontFamily: 'GT Eesti',
+                color: kColorBlack,
+                fontSize: 16),
+          ),
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        )
+      ],
+    ).show();
+  }
 }

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:hungryyy/components/drawer_item.dart';
 import 'package:hungryyy/screens/home_screen.dart';
 import 'package:hungryyy/services/local_storage.dart';
@@ -27,6 +28,21 @@ class _MenuScreenState extends State<MenuScreen> {
   Future<void> logoutUser() async {
     await LocalStorage.removeLoginInfo();
     Navigator.pushReplacementNamed(context, LoginScreen.id);
+  }
+
+  Future<void> getLocation() async {
+    final query = "${userApi.houseName}, ${userApi.streetName}, ${userApi.cityName}, ${userApi.stateName} ${userApi.postalCode}, ${userApi.countryName}";
+    var addresses = await Geocoder.local.findAddressesFromQuery(query);
+    var first = addresses.first;
+    print("${first.featureName} : ${first.coordinates}");
+    userApi.latitude = first.coordinates.latitude;
+    userApi.longitude = first.coordinates.longitude;
+  }
+
+  @override
+  void initState() {
+    getLocation();
+    super.initState();
   }
 
   @override

@@ -242,7 +242,7 @@ class _CartScreenState extends State<CartScreen> {
               if(cartApi.cartItems.isEmpty){
                 AlertBox.showErrorBox(context,"Cart is empty");
               }else{
-               Navigator.push(context,MaterialPageRoute(builder: (context) => BillingScreen(restaurant: restaurant)));
+               Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => BillingScreen(restaurant: restaurant)));
               }
             },
             child: Container(
