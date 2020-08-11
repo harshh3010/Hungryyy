@@ -48,4 +48,42 @@ class AlertBox{
       ],
     ).show();
   }
+
+  static Future<void> showConfirmationBox(BuildContext context,String title,Function onContinue) async {
+    await Alert(
+      context: context,
+      type: AlertType.warning,
+      title: title,
+      desc: 'Are you sure? Click okay to continue',
+      buttons: [
+        DialogButton(
+          color: kColorYellow,
+          child: Text(
+            "Cancel",
+            style: TextStyle(
+                fontFamily: 'GT Eesti',
+                color: kColorBlack,
+                fontSize: 16),
+          ),
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        ),
+        DialogButton(
+          color: kColorYellow,
+          child: Text(
+            "Okay",
+            style: TextStyle(
+                fontFamily: 'GT Eesti',
+                color: kColorBlack,
+                fontSize: 16),
+          ),
+          onPressed: (){
+            Navigator.pop(context);
+            onContinue();
+          } ,
+          width: 120,
+        )
+      ],
+    ).show();
+  }
 }
