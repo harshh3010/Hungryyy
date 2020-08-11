@@ -7,6 +7,7 @@ import 'package:hungryyy/model/order.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:hungryyy/utilities/user_api.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class MyOrdersScreen extends StatefulWidget {
   @override
@@ -43,6 +44,41 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
       ),
     ),
   ];
+  bool _loading = false;
+
+  Future<void> cancelOrder(String title,Order order) async {
+    AlertBox.showConfirmationBox(context,title,() async {
+      setState(() {
+        _loading = true;
+      });
+      final http.Response response = await http.post(kRemoveOrderUrl,body: {
+        'restaurant_id' : order.restaurantId,
+        'id' : order.id,
+      });
+      if(response.statusCode == 200 || response.statusCode == 201){
+        // Connection established
+        var data = jsonDecode(response.body.toString());
+        if(data.toString() == "SUCCESS"){
+          setState(() {
+            _loading = false;
+          });
+          AlertBox.showSuccessBox(context, 'Order removed successfully', 'Success');
+          // TODO:Refresh List
+        }else {
+          setState(() {
+            _loading = false;
+          });
+          AlertBox.showErrorBox(context,'Cannot perform this action');
+        }
+      }else{
+        // Unable to establish connection
+        setState(() {
+          _loading = false;
+        });
+        AlertBox.showErrorBox(context,'Unable to establish connection with the servers.\nERROR CODE: ${response.statusCode}');
+      }
+    });
+  }
 
   Future<void> loadUserOrders() async {
     final http.Response response = await http.post(kGetOrdersUrl,body: {
@@ -88,7 +124,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
             OrderCard(
               order: order,
               cancelOrder: (){
-                //TODO:CODE
+                cancelOrder('Remove Order History', order);
               },
               trackOrder: (){
                 //TODO:CODE
@@ -101,7 +137,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
             OrderCard(
               order: order,
               cancelOrder: (){
-                //TODO:CODE
+                cancelOrder('Cancel Order', order);
               },
               trackOrder: (){
                 //TODO:CODE
@@ -128,46 +164,51 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-            child: widget.iconButton,
-          ),
-          centerTitle: true,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 27),
-            child: Text(
-              'My Orders',
-              style: kHeadingStyle,
+    return ModalProgressHUD(
+      inAsyncCall: _loading,
+      color: Colors.white,
+      opacity: .5,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+              child: widget.iconButton,
+            ),
+            centerTitle: true,
+            title: Padding(
+              padding: const EdgeInsets.only(top: 27),
+              child: Text(
+                'My Orders',
+                style: kHeadingStyle,
+              ),
             ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: incompleteOrdersToDisplay,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-              child: Text(
-                'Previous Orders',
-                style: kLabelStyle,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: incompleteOrdersToDisplay,
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: completeOrdersToDisplay,
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+                child: Text(
+                  'Previous Orders',
+                  style: kLabelStyle,
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: completeOrdersToDisplay,
+              ),
+            ],
+          ),
         ),
       ),
     );
