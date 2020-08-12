@@ -5,6 +5,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/custom_text_input.dart';
+import 'package:hungryyy/screens/navigation_screens/search_page.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:hungryyy/utilities/user_api.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -15,7 +16,8 @@ class MyAddressScreen extends StatefulWidget {
   _MyAddressScreenState createState() => _MyAddressScreenState();
 
   final Widget iconButton;
-  MyAddressScreen({@required this.iconButton});
+  final Function onAddressChange;
+  MyAddressScreen({@required this.iconButton,@required this.onAddressChange});
 }
 
 class _MyAddressScreenState extends State<MyAddressScreen> {
@@ -139,6 +141,7 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
                         await getCurrentLocation();
                         await getUserAddress();
                         await saveUserData();
+                        widget.onAddressChange();
                       }else{
                         AlertBox.showErrorBox(context,'Please turn on location services');
                       }
@@ -290,6 +293,7 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
 
                         await getLocationFromAddress();
                         await saveUserData();
+                        widget.onAddressChange();
                       }else{
                         AlertBox.showErrorBox(context,'Please fill up all the fields');
                       }

@@ -22,6 +22,7 @@ const String kPlaceOrderUrl = "$kHostUrl/place_order.php";
 const String kGetOrdersUrl = "$kHostUrl/get_orders.php";
 const String kRemoveOrderUrl = "$kHostUrl/remove_order.php";
 const String kUpdateAddressUrl = "$kHostUrl/update_address.php";
+const String kHostDeliveryLocationUrl = "$kHostUrl/host_delivery_location.php";
 
 const TextStyle kHeadingStyle = TextStyle(
   fontFamily: 'GT Eesti',

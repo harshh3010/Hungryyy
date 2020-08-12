@@ -79,6 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       MyAddressScreen(
         iconButton: iconButton,
+        onAddressChange: (){
+          HomeScreen(currentIndex: widget.currentIndex).createState();
+        },
       ),
       PaymentMethodsScreen(
         iconButton:iconButton,

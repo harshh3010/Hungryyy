@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/screens/order_track_host.dart';
 import 'package:hungryyy/utilities/constants.dart';
+
 
 class PaymentMethodsScreen extends StatefulWidget {
   @override
@@ -30,6 +32,14 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
               style: kHeadingStyle,
             ),
           ),
+        ),
+      ),
+      body: Container(
+        child: FlatButton(
+          child: Text('GOTO MAP'),
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => OrderTrackHostScreen()));
+          },
         ),
       ),
     );

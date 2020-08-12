@@ -18,6 +18,8 @@ dependencies:
   geocoder: ^0.2.1
   intl: ^0.16.1
   google_maps_flutter: 0.5.18
+  location: ^3.0.0
+  flutter_polyline_points: ^0.2.2
 
 dev_dependencies:
   flutter_test:

@@ -333,6 +333,9 @@ class _SearchPageState extends State<SearchPage> {
                           color: kColorBlack,
                         ),
                       ),
+                    onAddressChange: (){
+                        SearchPage(iconButton: widget.iconButton,).createState();
+                    },
                   )));
                 },
                 child: Column(
