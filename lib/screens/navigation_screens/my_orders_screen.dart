@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:hungryyy/utilities/user_api.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+import '../order_track_receiver.dart';
+
 class MyOrdersScreen extends StatefulWidget {
   @override
   _MyOrdersScreenState createState() => _MyOrdersScreenState();
@@ -126,9 +128,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
               cancelOrder: (){
                 cancelOrder('Remove Order History', order);
               },
-              trackOrder: (){
-                //TODO:CODE
-              },
+              trackOrder: (){},
             ),
           );
         }
@@ -140,7 +140,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                 cancelOrder('Cancel Order', order);
               },
               trackOrder: (){
-                //TODO:CODE
+                Navigator.push(context, MaterialPageRoute(builder: (context) => OrderTrackReceiverScreen(order: order,)));
               },
             ),
           );
