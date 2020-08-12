@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hungryyy/screens/order_track_host.dart';
+import 'package:hungryyy/screens/order_track_receiver.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 
@@ -35,11 +36,21 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         ),
       ),
       body: Container(
-        child: FlatButton(
-          child: Text('GOTO MAP'),
-          onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => OrderTrackHostScreen()));
-          },
+        child: Column(
+          children: <Widget>[
+            FlatButton(
+              child: Text('GOTO HOST MAP'),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => OrderTrackHostScreen()));
+              },
+            ),
+            FlatButton(
+              child: Text('GOTO RECIEVER MAP'),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => OrderTrackReceiverScreen()));
+              },
+            ),
+          ],
         ),
       ),
     );

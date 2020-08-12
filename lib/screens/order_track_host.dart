@@ -6,6 +6,7 @@ import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 
+// TODO: Fetch this data later
 const String order_id = 'O100000001';
 const String restaurant_id = 'R100000001';
 const String name = 'Delivery guy name';
