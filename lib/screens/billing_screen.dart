@@ -5,6 +5,8 @@ import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/bill_item.dart';
 import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/model/restaurant.dart';
+import 'package:hungryyy/screens/paytm_payment_screen.dart';
+
 import 'package:hungryyy/utilities/cart_api.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
@@ -156,8 +158,14 @@ class _BillingScreenState extends State<BillingScreen> {
           ),
           bottomNavigationBar: GestureDetector(
             onTap: (){
-              // TODO: ADD PAYMENT GATEWAY
-              placeOrder();
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => PaytmPaymentScreen(
+                  amount: _finalAmount,
+                  orderId: widget.restaurant.id,
+                )
+              )).then((value){
+                placeOrder();
+              });
             },
             child: Container(
               height: 60,
