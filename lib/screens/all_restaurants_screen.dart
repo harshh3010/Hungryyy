@@ -32,8 +32,12 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
   ];
 
   void loadRestaurants(){
+    generateDisplayWidget(widget.restaurants);
+  }
+
+  void generateDisplayWidget(List inputList){
     List<Widget> myList = [];
-    for(var restaurant in widget.restaurants){
+    for(var restaurant in inputList){
       myList.add(RestaurantCardBig(restaurant: restaurant));
     }
     setState(() {
@@ -69,13 +73,7 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
       setState(() {
         filteredRestaurants = filteredRestaurants;
       });
-      List<Widget> myList = [];
-      for(var restaurant in filteredRestaurants){
-        myList.add(RestaurantCardBig(restaurant: restaurant));
-      }
-      setState(() {
-        restaurantsToDisplayAll = myList;
-      });
+      generateDisplayWidget(filteredRestaurants);
     }
   }
 
@@ -119,6 +117,7 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
           onTap: (){
             setState(() {
               filterMap = null;
+              generateDisplayWidget(widget.restaurants);
             });
           },
           child: Container(

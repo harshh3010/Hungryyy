@@ -243,6 +243,7 @@ class _DishScreenState extends State<DishScreen> {
             onTap: (){
               setState(() {
                 filterMap = null;
+                generateDisplayWidget(allDishes);
               });
             },
           child: Container(
