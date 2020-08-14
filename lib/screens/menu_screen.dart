@@ -132,38 +132,11 @@ class _MenuScreenState extends State<MenuScreen> {
                                             },
                                           ),
                                           DrawerItem(
-                                            label: 'Payment Methods',
-                                            icon: Icons.payment,
-                                            onPressed: (){
-                                              setState(() {
-                                                _currentPageIndex = 3;
-                                              });
-                                            },
-                                          ),
-                                          DrawerItem(
-                                            label: 'My Vouchers',
-                                            icon: Icons.description,
-                                            onPressed: (){
-                                              setState(() {
-                                                _currentPageIndex = 4;
-                                              });
-                                            },
-                                          ),
-                                          DrawerItem(
                                             label: 'Contact Us',
                                             icon: Icons.chat_bubble_outline,
                                             onPressed: (){
                                               setState(() {
-                                                _currentPageIndex = 5;
-                                              });
-                                            },
-                                          ),
-                                          DrawerItem(
-                                            label: 'Settings',
-                                            icon: Icons.settings,
-                                            onPressed: (){
-                                              setState(() {
-                                                _currentPageIndex = 6;
+                                                _currentPageIndex = 3;
                                               });
                                             },
                                           ),
@@ -172,7 +145,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                             icon: Icons.help_outline,
                                             onPressed: (){
                                               setState(() {
-                                                _currentPageIndex = 7;
+                                                _currentPageIndex = 4;
                                               });
                                             },
                                           ),

@@ -64,6 +64,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
           setState(() {
             _loading = false;
           });
+          loadUserOrders();
           AlertBox.showSuccessBox(context, 'Order removed successfully', 'Success');
           // TODO:Refresh List
         }else {
@@ -188,26 +189,32 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: incompleteOrdersToDisplay,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-                child: Text(
-                  'Previous Orders',
-                  style: kLabelStyle,
+        body: RefreshIndicator(
+          onRefresh: loadUserOrders,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: incompleteOrdersToDisplay,
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: completeOrdersToDisplay,
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+                  child: Text(
+                    'Previous Orders',
+                    style: kLabelStyle,
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: completeOrdersToDisplay,
+                ),
+                completeOrdersToDisplay.isEmpty ?
+                    Center(child: Text('Nothing to display',style: kItemStyle.copyWith(color: Colors.grey.shade500))):
+                    Container(),
+              ],
+            ),
           ),
         ),
       ),

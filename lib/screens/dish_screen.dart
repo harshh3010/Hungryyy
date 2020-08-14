@@ -213,10 +213,13 @@ class _DishScreenState extends State<DishScreen> {
                 ),
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: dishesToDisplay,
+                child: RefreshIndicator(
+                  onRefresh: loadDishes,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: dishesToDisplay,
+                    ),
                   ),
                 ),
               ),

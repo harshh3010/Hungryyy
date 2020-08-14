@@ -293,12 +293,16 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
+  Future<void> loadData() async {
+    await loadCategories();
+    await loadRestaurants();
+    await loadMostPopular();
+  }
+
   @override
   void initState() {
     super.initState();
-    loadCategories();
-    loadRestaurants();
-    loadMostPopular();
+    loadData();
   }
 
   @override
@@ -380,119 +384,122 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-                child: Text(
-                  'Find any Restaurant In',
-                  style: kHeadingStyle,
+        body: RefreshIndicator(
+          onRefresh: loadData,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
+                  child: Text(
+                    'Find any Restaurant In',
+                    style: kHeadingStyle,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(30, 5, 30, 0),
-                child: Text(
-                  'Your City 😉',
-                  style: kHeadingStyle,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(30, 5, 30, 0),
+                  child: Text(
+                    'Your City 😉',
+                    style: kHeadingStyle,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
-                child: SearchBox(
-                  hint: 'Search Food',
-                  onChanged: (value) {
-                    //TODO:CODE
-                  },
+                SizedBox(
+                  height: 30,
                 ),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              displayCategories ?
-                  Column(
-                    children: <Widget>[
-                      ShowcaseCard(
-                        label: 'Categories',
-                        viewAll: () {
-                          //TODO:UPDATE CURRENT LOCATION
-                          Navigator.push(context,MaterialPageRoute(
-                              builder: (context) => DishScreen(
-                                city: userApi.cityName,
-                                state: userApi.stateName,
-                                country: userApi.countryName,
-                                categoryId: 'none',
-                                popular: 'NO',
-                              ),
-                          ));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20)  ,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: categoriesToDisplay,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                    ],
-                  )
-                  : Container(),
-              displayRestaurants ?
-                  Column(
-                    children: <Widget>[
-                      ShowcaseCard(
-                        label: 'Near You',
-                        viewAll: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AllRestaurantsScreen(restaurants: allRestaurants,),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: 270,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+                  child: SearchBox(
+                    hint: 'Search Food',
+                    onChanged: (value) {
+                      //TODO:CODE
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                displayCategories ?
+                    Column(
+                      children: <Widget>[
+                        ShowcaseCard(
+                          label: 'Categories',
+                          viewAll: () {
+                            //TODO:UPDATE CURRENT LOCATION
+                            Navigator.push(context,MaterialPageRoute(
+                                builder: (context) => DishScreen(
+                                  city: userApi.cityName,
+                                  state: userApi.stateName,
+                                  country: userApi.countryName,
+                                  categoryId: 'none',
+                                  popular: 'NO',
+                                ),
+                            ));
+                          },
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.only(left: 20)  ,
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
-                                children: restaurantsToDisplay,
+                                children: categoriesToDisplay,
                               ),
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    )
+                    : Container(),
+                displayRestaurants ?
+                    Column(
+                      children: <Widget>[
+                        ShowcaseCard(
+                          label: 'Near You',
+                          viewAll: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AllRestaurantsScreen(restaurants: allRestaurants,),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 270,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: restaurantsToDisplay,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    ):Container(),
+                ShowcaseCard(
+                  label: 'Most Popular',
+                  viewAll: (){
+                    Navigator.push(context,MaterialPageRoute(
+                      builder: (context) => DishScreen(
+                        city: userApi.cityName,
+                        state: userApi.stateName,
+                        country: userApi.countryName,
+                        categoryId: 'none',
+                        popular: 'YES',
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                    ],
-                  ):Container(),
-              ShowcaseCard(
-                label: 'Most Popular',
-                viewAll: (){
-                  Navigator.push(context,MaterialPageRoute(
-                    builder: (context) => DishScreen(
-                      city: userApi.cityName,
-                      state: userApi.stateName,
-                      country: userApi.countryName,
-                      categoryId: 'none',
-                      popular: 'YES',
-                    ),
-                  ));
-                },
-                child: mostPopularDish,
-              ),
-            ],
+                    ));
+                  },
+                  child: mostPopularDish,
+                ),
+              ],
+            ),
           ),
         ),
       ),
