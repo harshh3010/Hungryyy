@@ -31,6 +31,7 @@ class _BillingScreenState extends State<BillingScreen> {
   double _finalAmount = 0;
   String cartItems = "";
   bool _loading = false;
+  int paymentMethod; // 1 for COD, 2 for PayTM
 
   void calculateAmount(){
     for(var map in cartApi.cartItems){
@@ -41,7 +42,7 @@ class _BillingScreenState extends State<BillingScreen> {
     _finalAmount = _totalCost + _deliveryCharge - _totalDiscount;
   }
 
-  Future<void> placeOrder() async {
+  Future<void> placeOrder(String status) async {
     setState(() {
       _loading = true;
     });
@@ -55,7 +56,7 @@ class _BillingScreenState extends State<BillingScreen> {
       'price' : (_finalAmount).toString(),
       'timestamp' : (DateTime.now().millisecondsSinceEpoch).toString(),
       'cart_items' : cartItems,
-      'status' : 'confirmed',
+      'status' : status,
     });
     if(response.statusCode == 200 || response.statusCode == 201){
       // Connection established
@@ -83,6 +84,12 @@ class _BillingScreenState extends State<BillingScreen> {
     }
   }
 
+  void setPaymentMethod(val){
+    setState(() {
+      paymentMethod = val;
+    });
+  }
+
   @override
   void initState() {
     _deliveryCharge = widget.restaurant.deliveryCharge;
@@ -91,6 +98,7 @@ class _BillingScreenState extends State<BillingScreen> {
       Dish dish = map['product'];
      cartItems = cartItems + dish.name + ',';
     }
+    paymentMethod = 1;
     super.initState();
   }
 
@@ -153,21 +161,46 @@ class _BillingScreenState extends State<BillingScreen> {
                   labelText: 'Final Amount',
                   valueText: 'Rs $_finalAmount',
                 ),
+                SizedBox(
+                  height: 25,
+                ),
+                RadioListTile(
+                  activeColor: kColorRed,
+                  value: 1,
+                  groupValue: paymentMethod,
+                  onChanged: (val){
+                    setPaymentMethod(val);
+                  },
+                  title: Text('Cash on delivery',style: kItemStyle),
+                ),
+                RadioListTile(
+                  activeColor: kColorRed,
+                  value: 2,
+                  groupValue: paymentMethod,
+                  title: Text('Pay using PayTM',style: kItemStyle),
+                  onChanged: (val){
+                    setPaymentMethod(val);
+                  },
+                )
               ],
             ),
           ),
           bottomNavigationBar: GestureDetector(
             onTap: () async {
-              final String status = await Navigator.push(context, MaterialPageRoute(
-                builder: (context) => PaytmPaymentScreen(
-                  amount: _finalAmount,
-                  orderId: widget.restaurant.id,
-                )
-              ));
-              if(status == 'TXN_SUCCESS'){
-                placeOrder();
-              }else{
-                AlertBox.showErrorBox(context, 'Unable to complete payment');
+              if(paymentMethod == 1){
+                placeOrder('unpaid');
+              }else if(paymentMethod == 2){
+                final String status = await Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => PaytmPaymentScreen(
+                      amount: _finalAmount,
+                      orderId: widget.restaurant.id,
+                    )
+                ));
+                if(status == 'TXN_SUCCESS'){
+                  placeOrder('paid');
+                }else{
+                  AlertBox.showErrorBox(context, 'Unable to complete payment');
+                }
               }
             },
             child: Container(
