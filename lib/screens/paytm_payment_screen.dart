@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
@@ -18,7 +19,7 @@ class _PaytmPaymentScreenState extends State<PaytmPaymentScreen> {
   String orderId;
   String customerId;
   double amount;
-  final email = 'harsh.gyanchandani@gmail.com';
+  String email;
   UserApi userApi = UserApi.instance;
 
   StreamSubscription _onDestroy;
@@ -41,8 +42,9 @@ class _PaytmPaymentScreenState extends State<PaytmPaymentScreen> {
     super.initState();
 
     customerId = userApi.email;
-    orderId = widget.orderId;
+    orderId = '${widget.orderId}-$customerId-${DateTime.now().millisecondsSinceEpoch}';
     amount = widget.amount;
+    email = userApi.email;
 
     flutterWebviewPlugin.close();
 
@@ -62,13 +64,15 @@ class _PaytmPaymentScreenState extends State<PaytmPaymentScreen> {
           print("URL changed: $url");
           if (url.contains('callback')) {
             flutterWebviewPlugin.getCookies().then((cookies) {
-              print("cookies $cookies");
-              print('TXNID $cookies["TXNID"]');
-              print('STATUS $cookies["STATUS"]');
-              print('RESPCODE $cookies["RESPCODE"]');
-              print('RESPMSG $cookies["RESPMSG"]');
-              print('TXNDATE $cookies["TXNDATE"]');
-              // add logic to make show payment status
+              String status;
+              int i=0;
+              for(var x in cookies.values){
+                if(i == 1){
+                  status = x;
+                }
+                i++;
+              }
+              Navigator.pop(context,status);
               flutterWebviewPlugin.close();
             });
           }

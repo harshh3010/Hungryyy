@@ -157,15 +157,18 @@ class _BillingScreenState extends State<BillingScreen> {
             ),
           ),
           bottomNavigationBar: GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(
+            onTap: () async {
+              final String status = await Navigator.push(context, MaterialPageRoute(
                 builder: (context) => PaytmPaymentScreen(
                   amount: _finalAmount,
                   orderId: widget.restaurant.id,
                 )
-              )).then((value){
+              ));
+              if(status == 'TXN_SUCCESS'){
                 placeOrder();
-              });
+              }else{
+                AlertBox.showErrorBox(context, 'Unable to complete payment');
+              }
             },
             child: Container(
               height: 60,
