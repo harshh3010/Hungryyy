@@ -4,8 +4,8 @@ import 'package:hungryyy/utilities/constants.dart';
 class SearchBox extends StatelessWidget {
 
   final String hint;
-  final Function onChanged;
-  SearchBox({@required this.hint,@required this.onChanged});
+  final Function onChanged,onPressed;
+  SearchBox({@required this.hint,@required this.onChanged,@required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -55,18 +55,21 @@ class SearchBox extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: kColorYellow,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(5),
-                bottomRight: Radius.circular(5),
+          GestureDetector(
+            onTap: onPressed,
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: kColorYellow,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(5),
+                  bottomRight: Radius.circular(5),
+                ),
               ),
-            ),
-            child: Center(
-              child: Icon(Icons.tune),
+              child: Center(
+                child: Icon(Icons.tune),
+              ),
             ),
           ),
         ],

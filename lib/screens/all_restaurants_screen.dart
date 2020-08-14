@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/components/filter_card.dart';
 import 'package:hungryyy/components/restaurant_card_big.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/model/restaurant.dart';
+import 'package:hungryyy/screens/cart_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class AllRestaurantsScreen extends StatefulWidget {
@@ -39,6 +41,18 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
     loadRestaurants();
   }
 
+  void showFilterCard(){
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enableDrag: true,
+        builder: (BuildContext buildContext){
+          return FilterCard();
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +87,7 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
                 padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
                 child: IconButton(
                   onPressed: () {
-                    //TODO:CODE
+                    Navigator.pushNamed(context,CartScreen.id);
                   },
                   padding: EdgeInsets.all(10),
                   icon: Icon(
@@ -93,6 +107,9 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
                 hint: 'Search Food',
                 onChanged: (value) {
                   //TODO:CODE
+                },
+                onPressed: (){
+                  showFilterCard();
                 },
               ),
             ),

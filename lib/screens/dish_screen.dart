@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/dish_card.dart';
+import 'package:hungryyy/components/filter_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/model/restaurant.dart';
@@ -76,7 +77,6 @@ class _DishScreenState extends State<DishScreen> {
         setState(() {
           _loading = false;
         });
-        //TODO:ADD DISH
         Navigator.push(context, MaterialPageRoute(builder: (context) => RestaurantScreen(restaurant: restaurant,specificDish: dish)));
       }
     }else{
@@ -151,6 +151,18 @@ class _DishScreenState extends State<DishScreen> {
     loadDishes();
   }
 
+  void showFilterCard(){
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enableDrag: true,
+        builder: (BuildContext buildContext){
+          return FilterCard();
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -209,6 +221,9 @@ class _DishScreenState extends State<DishScreen> {
                   hint: 'Search Food',
                   onChanged: (value) {
                     //TODO:CODE
+                  },
+                  onPressed: (){
+                    showFilterCard();
                   },
                 ),
               ),

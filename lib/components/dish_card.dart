@@ -11,8 +11,6 @@ class DishCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    //TODO:CHANGE DISTANCE
-    double distance = 0;
     String deliveryText;
 
     if(dish.deliveryCharge == 0){
@@ -67,13 +65,23 @@ class DishCard extends StatelessWidget {
               direction: Axis.horizontal,
               alignment: WrapAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  dish.restaurantName,
-                  style: TextStyle(
-                    fontFamily: 'GT Eesti',
-                    fontSize: 16,
-                    color: Colors.grey.shade500,
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(
+                      Icons.location_on,
+                      color: kColorRed,
+                      size: 12,
+                    ),
+                    Text(
+                      dish.restaurantName,
+                      style: TextStyle(
+                        fontFamily: 'GT Eesti',
+                        fontSize: 16,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -92,52 +100,27 @@ class DishCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
             SizedBox(
               height: 5,
             ),
-            Wrap(
-              direction: Axis.horizontal,
+            Row(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(
-                      Icons.location_on,
-                      color: kColorRed,
-                      size: 12,
-                    ),
-                    Text(
-                      '$distance km',
-                      style: TextStyle(
-                        fontFamily: 'GT Eesti',
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                Icon(
+                  Icons.attach_money,
+                  color: kColorRed,
+                  size: 12,
                 ),
                 Text(
-                    ' • '
+                  deliveryText,
+                  style: TextStyle(
+                    fontFamily: 'GT Eesti',
+                    fontSize: 12,
+                  ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(
-                      Icons.attach_money,
-                      color: kColorRed,
-                      size: 12,
-                    ),
-                    Text(
-                      deliveryText,
-                      style: TextStyle(
-                        fontFamily: 'GT Eesti',
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
             SizedBox(

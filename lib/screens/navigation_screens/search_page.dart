@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/category_card.dart';
 import 'package:hungryyy/components/dish_card.dart';
+import 'package:hungryyy/components/filter_card.dart';
 import 'package:hungryyy/components/restaurant_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/components/showcase_card.dart';
@@ -30,7 +32,6 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
 
-  //TODO:LOAD CURRENT POSITION
   List<Widget> categoriesToDisplay = [
     Padding(
       padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
@@ -97,7 +98,6 @@ class _SearchPageState extends State<SearchPage> {
         setState(() {
           _loading = false;
         });
-        //TODO:ADD DISH
         Navigator.push(context, MaterialPageRoute(builder: (context) => RestaurantScreen(restaurant: restaurant,specificDish: dish)));
       }
     }else{
@@ -305,6 +305,18 @@ class _SearchPageState extends State<SearchPage> {
     loadData();
   }
 
+  void showFilterCard(){
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enableDrag: true,
+        builder: (BuildContext buildContext){
+          return FilterCard();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -414,6 +426,9 @@ class _SearchPageState extends State<SearchPage> {
                     onChanged: (value) {
                       //TODO:CODE
                     },
+                    onPressed: (){
+                      showFilterCard();
+                    },
                   ),
                 ),
                 SizedBox(
@@ -425,7 +440,6 @@ class _SearchPageState extends State<SearchPage> {
                         ShowcaseCard(
                           label: 'Categories',
                           viewAll: () {
-                            //TODO:UPDATE CURRENT LOCATION
                             Navigator.push(context,MaterialPageRoute(
                                 builder: (context) => DishScreen(
                                   city: userApi.cityName,

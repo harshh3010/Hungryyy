@@ -1,29 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hungryyy/model/restaurant.dart';
 import 'package:hungryyy/screens/restaurant_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
+import 'package:hungryyy/utilities/user_api.dart';
 
-class RestaurantCard extends StatelessWidget {
+class RestaurantCard extends StatefulWidget {
+  @override
+  _RestaurantCardState createState() => _RestaurantCardState();
 
   final Restaurant restaurant;
   RestaurantCard({@required this.restaurant});
+}
+
+class _RestaurantCardState extends State<RestaurantCard> {
+
+  double distance = 0;
+  UserApi userApi = UserApi.instance;
+
+  Future<void> calculateDistance() async{
+    distance = await Geolocator().distanceBetween(widget.restaurant.latitude, widget.restaurant.longitude, userApi.latitude, userApi.longitude);
+    distance = distance/1000;
+    distance = distance.roundToDouble();
+
+    setState(() {
+      distance = distance;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    //TODO:UPDATE DISTANCE
     String deliveryText;
-    double distance = 0;
-    if(restaurant.deliveryCharge == 0){
+
+    if(widget.restaurant.deliveryCharge == 0){
       deliveryText = 'Free Delivery';
     }else{
-      deliveryText = 'Rs. ${restaurant.deliveryCharge} Delivery Cost';
+      deliveryText = 'Rs. ${widget.restaurant.deliveryCharge} Delivery Cost';
     }
 
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
-          builder: (context) => RestaurantScreen(restaurant: restaurant,),
+          builder: (context) => RestaurantScreen(restaurant: widget.restaurant,),
         ),);
       },
       child: Container(
@@ -49,7 +68,7 @@ class RestaurantCard extends StatelessWidget {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(restaurant.imageUrl),
+                      image: NetworkImage(widget.restaurant.imageUrl),
                       fit: BoxFit.cover
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -60,7 +79,7 @@ class RestaurantCard extends StatelessWidget {
               height: 10,
             ),
             Text(
-              restaurant.name,
+              widget.restaurant.name,
               style: TextStyle(
                 fontFamily: 'GT Eesti',
                 fontSize: 18,
@@ -124,7 +143,7 @@ class RestaurantCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${restaurant.rating}',
+                  '${widget.restaurant.rating}',
                   style: TextStyle(
                       fontFamily: 'GT Eesti',
                       fontSize: 12
