@@ -17,7 +17,10 @@ class AllRestaurantsScreen extends StatefulWidget {
 class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
 
   String searchText;
+  Map filterMap;
+  Widget filterAppliedBar;
 
+  List<Restaurant> filteredRestaurants = [];
   List<Widget> restaurantsToDisplay = [];
   List<Widget> restaurantsToDisplayAll = [
     Padding(
@@ -44,8 +47,8 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
     loadRestaurants();
   }
 
-  void showFilterCard(){
-    showModalBottomSheet(
+  void showFilterCard() async {
+   filterMap = await showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -54,6 +57,48 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
         builder: (BuildContext buildContext){
           return FilterCard();
         });
+
+    print(filterMap);
+    if(filterMap != null){
+      filteredRestaurants = [];
+      for(var restaurant in widget.restaurants){
+        if(applyFilter(filterMap,restaurant)){
+          filteredRestaurants.add(restaurant);
+        }
+      }
+      setState(() {
+        filteredRestaurants = filteredRestaurants;
+      });
+      List<Widget> myList = [];
+      for(var restaurant in filteredRestaurants){
+        myList.add(RestaurantCardBig(restaurant: restaurant));
+      }
+      setState(() {
+        restaurantsToDisplayAll = myList;
+      });
+    }
+  }
+
+  bool applyFilter(Map filterMap,Restaurant restaurant) {
+    bool pricingFilter,ratingFilter,freeDeliveryFilter,offerFilter;
+    pricingFilter = true;
+    switch(filterMap['rating']){
+      case Rating.low : ratingFilter = restaurant.rating <= 2;
+      break;
+      case Rating.mid : ratingFilter = restaurant.rating > 2 && restaurant.rating < 4;
+      break;
+      case Rating.high : ratingFilter = restaurant.rating > 4;
+      break;
+      default : ratingFilter = true;
+    }
+    if(filterMap['freeDelivery']){
+      freeDeliveryFilter = restaurant.deliveryCharge == 0;
+    }else{
+      freeDeliveryFilter = true;
+    }
+    offerFilter = true;
+
+    return (pricingFilter && ratingFilter && freeDeliveryFilter && offerFilter);
   }
 
   @override
@@ -61,6 +106,42 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
 
     if(searchText == null){
       restaurantsToDisplay = restaurantsToDisplayAll;
+    }
+    if(filteredRestaurants.isEmpty){
+      filteredRestaurants = widget.restaurants;
+    }
+
+    if(filterMap != null){
+      filterAppliedBar = Positioned(
+        bottom: 0,
+        left: 0,
+        child: GestureDetector(
+          onTap: (){
+            setState(() {
+              filterMap = null;
+            });
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+            decoration: BoxDecoration(
+              color: kColorRed,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
+              ),
+            ),
+            child: Center(
+              child: Text(
+                'Filter applied. Tap to remove',
+                style: kLabelStyle.copyWith(color: Colors.white,fontSize: 18),
+              ),
+            ),
+          ),
+        ),
+      );
+    }else{
+      filterAppliedBar = Container();
     }
 
     return Scaffold(
@@ -107,43 +188,49 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
             ],
           ),
         ),
-        body: Column(
+        body: Stack(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
-              child: SearchBox(
-                hint: 'Search Food',
-                onChanged: (value) {
-                  if(value.toString().trim().isEmpty){
-                    setState(() {
-                      searchText = null;
-                    });
-                  }else{
-                    searchText = value.toString().toLowerCase();
-                    List<Restaurant> filteredList = widget.restaurants.where((restaurant) => restaurant.name.toLowerCase().contains(searchText)).toList();
-                    List<Widget> myList = [];
-                    for(var restaurant in filteredList){
-                      myList.add(RestaurantCardBig(restaurant: restaurant));
-                    }
-                    setState(() {
-                      restaurantsToDisplay = myList;
-                    });
-                  }
-                },
-                onPressed: (){
-                  showFilterCard();
-                },
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: restaurantsToDisplay,
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+                  child: SearchBox(
+                    hint: 'Search Food',
+                    onChanged: (value) {
+                      if(value.toString().trim().isEmpty){
+                        setState(() {
+                          searchText = null;
+                        });
+                      }else{
+                        searchText = value.toString().toLowerCase();
+                        List<Restaurant> filteredList = filteredRestaurants.where((restaurant) => restaurant.name.toLowerCase().contains(searchText)).toList();
+                        List<Widget> myList = [];
+                        for(var restaurant in filteredList){
+                          myList.add(RestaurantCardBig(restaurant: restaurant));
+                        }
+                        setState(() {
+                          restaurantsToDisplay = myList;
+                        });
+                      }
+                    },
+                    onPressed: (){
+                      showFilterCard();
+                    },
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: restaurantsToDisplay,
+                    ),
+                  ),
+                ),
+              ],
             ),
+            filterAppliedBar,
           ],
-        ));
+        ) ,
+    );
   }
 }

@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
-class FilterCard extends StatelessWidget {
-  const FilterCard({
-    Key key,
-  }) : super(key: key);
+enum Rating{
+  low,
+  mid,
+  high
+}
+
+enum Pricing{
+  low,
+  mid,
+  high
+}
+
+class FilterCard extends StatefulWidget {
+  @override
+  _FilterCardState createState() => _FilterCardState();
+}
+
+class _FilterCardState extends State<FilterCard> {
+
+  Pricing selectedPricing;
+  Rating selectedRating;
+
+  bool freeDeliveryFilter = false,offerFilter = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,24 +63,42 @@ class FilterCard extends StatelessWidget {
               alignment: WrapAlignment.spaceBetween,
               children: <Widget>[
                 FlatButton(
-                  color: kColorGrey,
+                  color: selectedPricing == Pricing.low ? kColorYellow : kColorGrey,
                   child: Text('₹',style: kItemStyle),
                   onPressed: (){
-                    //TODO:CODE
+                    setState(() {
+                      if(selectedPricing == Pricing.low){
+                        selectedPricing = null;
+                      }else{
+                        selectedPricing = Pricing.low;
+                      }
+                    });
                   },
                 ),
                 FlatButton(
-                  color: kColorGrey,
+                  color: selectedPricing == Pricing.mid ? kColorYellow : kColorGrey,
                   child: Text('₹₹',style: kItemStyle),
                   onPressed: (){
-                    //TODO:CODE
+                    setState(() {
+                      if(selectedPricing == Pricing.mid){
+                        selectedPricing = null;
+                      }else{
+                        selectedPricing = Pricing.mid;
+                      }
+                    });
                   },
                 ),
                 FlatButton(
-                  color: kColorYellow,
+                  color: selectedPricing == Pricing.high ? kColorYellow : kColorGrey,
                   child: Text('₹₹₹',style: kItemStyle),
                   onPressed: (){
-                    //TODO:CODE
+                    setState(() {
+                      if(selectedPricing == Pricing.high){
+                        selectedPricing = null;
+                      }else{
+                        selectedPricing = Pricing.high;
+                      }
+                    });
                   },
                 ),
               ],
@@ -77,24 +114,42 @@ class FilterCard extends StatelessWidget {
               alignment: WrapAlignment.spaceBetween,
               children: <Widget>[
                 FlatButton(
-                  color: kColorGrey,
+                  color: selectedRating == Rating.low ? kColorYellow : kColorGrey,
                   child: Text('★',style: kItemStyle),
                   onPressed: (){
-                    //TODO:CODE
+                    setState(() {
+                      if(selectedRating == Rating.low){
+                        selectedRating = null;
+                      }else{
+                        selectedRating = Rating.low;
+                      }
+                    });
                   },
                 ),
                 FlatButton(
-                  color: kColorGrey,
+                  color: selectedRating == Rating.mid ? kColorYellow : kColorGrey,
                   child: Text('★★',style: kItemStyle),
                   onPressed: (){
-                    //TODO:CODE
+                    setState(() {
+                      if(selectedRating == Rating.mid){
+                        selectedRating = null;
+                      }else{
+                        selectedRating = Rating.mid;
+                      }
+                    });
                   },
                 ),
                 FlatButton(
-                  color: kColorYellow,
+                  color: selectedRating == Rating.high ? kColorYellow : kColorGrey,
                   child: Text('★★★',style: kItemStyle),
                   onPressed: (){
-                    //TODO:CODE
+                    setState(() {
+                      if(selectedRating == Rating.high){
+                        selectedRating = null;
+                      }else{
+                        selectedRating = Rating.high;
+                      }
+                    });
                   },
                 ),
               ],
@@ -109,20 +164,32 @@ class FilterCard extends StatelessWidget {
             Wrap(
               children: <Widget>[
                 FlatButton(
-                  color: kColorGrey,
+                  color: freeDeliveryFilter ? kColorYellow : kColorGrey,
                   child: Text('Free Delivery',style: kItemStyle),
                   onPressed: (){
-                    //TODO:CODE
+                    setState(() {
+                      if(freeDeliveryFilter){
+                        freeDeliveryFilter = false;
+                      }else{
+                        freeDeliveryFilter = true;
+                      }
+                    });
                   },
                 ),
                 SizedBox(
                   width: 10,
                 ),
                 FlatButton(
-                  color: kColorGrey,
+                  color: offerFilter ? kColorYellow : kColorGrey,
                   child: Text('Offer',style: kItemStyle),
                   onPressed: (){
-                    //TODO:CODE
+                    setState(() {
+                      if(offerFilter){
+                        offerFilter = false;
+                      }else{
+                        offerFilter = true;
+                      }
+                    });
                   },
                 ),
               ],
@@ -132,7 +199,13 @@ class FilterCard extends StatelessWidget {
             ),
             MaterialButton(
               onPressed: (){
-                //TODO:CODE
+                Map filterMap = {
+                  'pricing' : selectedPricing,
+                  'rating' : selectedRating,
+                  'freeDelivery' : freeDeliveryFilter,
+                  'offer' : offerFilter,
+                };
+                Navigator.pop(context,filterMap);
               },
               padding: EdgeInsets.all(25),
               color: kColorYellow,

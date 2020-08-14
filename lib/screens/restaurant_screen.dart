@@ -334,20 +334,6 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
                     iconTheme: IconThemeData(
                       color: _iconColorTween.value,
                     ),
-                    actions: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
-                        child: IconButton(
-                          onPressed: () {
-                            //TODO:CODE
-                          },
-                          padding: EdgeInsets.all(10),
-                          icon: Icon(
-                            Icons.search,
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ),
