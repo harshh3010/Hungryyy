@@ -242,59 +242,62 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
           height: double.infinity,
           child: Stack(
             children: <Widget>[
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.fromLTRB(30, 200, 30, 50),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(widget.restaurant.imageUrl),
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                              kColorBlack.withOpacity(0.3), BlendMode.srcATop),
+              RefreshIndicator(
+                onRefresh: loadRestaurantMenu,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.fromLTRB(30, 200, 30, 50),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(widget.restaurant.imageUrl),
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                                kColorBlack.withOpacity(0.3), BlendMode.srcATop),
+                          ),
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(50),
+                          ),
                         ),
-                        borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(50),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              widget.restaurant.name,
+                              style: kHeadingStyle.copyWith(
+                                  color: Colors.white, fontSize: 30),
+                            ),
+                            Text(
+                              '${widget.restaurant.streetName}, ${widget.restaurant.cityName}',
+                              style: kLabelStyle.copyWith(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                          ],
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            widget.restaurant.name,
-                            style: kHeadingStyle.copyWith(
-                                color: Colors.white, fontSize: 30),
-                          ),
-                          Text(
-                            '${widget.restaurant.streetName}, ${widget.restaurant.cityName}',
-                            style: kLabelStyle.copyWith(
-                                color: Colors.white, fontSize: 16),
-                          ),
-                        ],
+                      SizedBox(
+                        height: 15,
                       ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Container(
-                            child: specificDishToDisplay,
-                          ),
-                          Column(
-                            children: categoriesToDisplay,
-                          ),
-                        ],
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                              child: specificDishToDisplay,
+                            ),
+                            Column(
+                              children: categoriesToDisplay,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Container(

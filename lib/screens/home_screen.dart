@@ -4,12 +4,8 @@ import 'package:hungryyy/screens/navigation_screens/contact_us_screen.dart';
 import 'package:hungryyy/screens/navigation_screens/help_screen.dart';
 import 'package:hungryyy/screens/navigation_screens/my_orders_screen.dart';
 import 'package:hungryyy/screens/navigation_screens/search_page.dart';
-import 'package:hungryyy/screens/navigation_screens/settings_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
-
 import 'navigation_screens/my_address_screen.dart';
-import 'navigation_screens/my_vouchers_screen.dart';
-import 'navigation_screens/payment_methods.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String id = 'home_screen';
@@ -83,16 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
           HomeScreen(currentIndex: widget.currentIndex).createState();
         },
       ),
-      PaymentMethodsScreen(
-        iconButton:iconButton,
-      ),
-      MyVouchersScreen(
-        iconButton:iconButton,
-      ),
       ContactUsScreen(
-        iconButton: iconButton,
-      ),
-      SettingsScreen(
         iconButton: iconButton,
       ),
       HelpScreen(
