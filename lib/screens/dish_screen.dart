@@ -25,7 +25,14 @@ class DishScreen extends StatefulWidget {
 }
 
 class _DishScreenState extends State<DishScreen> {
-  List<Widget> dishesToDisplay = [
+
+  UserApi userApi = UserApi.instance;
+  String searchText;
+  bool _loading = false;
+
+  List<Dish> allDishes = [];
+  List<Widget> dishesToDisplay = [];
+  List<Widget> dishesToDisplayAll = [
     Container(
       child: Center(
         child: Padding(
@@ -37,8 +44,6 @@ class _DishScreenState extends State<DishScreen> {
       ),
     ),
   ];
-  UserApi userApi = UserApi.instance;
-  bool _loading = false;
 
   Future<void> openRestaurant(Dish dish) async {
     setState(() {
@@ -89,6 +94,7 @@ class _DishScreenState extends State<DishScreen> {
   }
 
   Future<void> loadDishes() async {
+    allDishes = [];
     final http.Response response = await http.post(kLoadDishesUrl, body: {
       'city_name': widget.city,
       'state_name': widget.state,
@@ -102,7 +108,6 @@ class _DishScreenState extends State<DishScreen> {
       if (data.toString() == 'Error loading data') {
         AlertBox.showErrorBox(context, 'Unable to load data');
       } else {
-        List<Widget> myList = [];
         for (Map map in data) {
           Dish dish = Dish(
             id: map['id'],
@@ -122,6 +127,10 @@ class _DishScreenState extends State<DishScreen> {
             deliveryCharge: double.parse(map['delivery_charge']),
             restaurantName: map['restaurant_name'],
           );
+          allDishes.add(dish);
+        }
+        List<Widget> myList = [];
+        for(var dish in allDishes){
           myList.add(
             DishCard(
               dish: dish,
@@ -130,12 +139,9 @@ class _DishScreenState extends State<DishScreen> {
               },
             ),
           );
-          setState(() {
-            dishesToDisplay = myList;
-          });
         }
         setState(() {
-          dishesToDisplay = myList;
+          dishesToDisplayAll = myList;
         });
       }
     } else {
@@ -165,6 +171,11 @@ class _DishScreenState extends State<DishScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(searchText == null){
+      dishesToDisplay = dishesToDisplayAll;
+    }
+
     return ModalProgressHUD(
       inAsyncCall: _loading,
       color: Colors.white,
@@ -220,7 +231,28 @@ class _DishScreenState extends State<DishScreen> {
                 child: SearchBox(
                   hint: 'Search Food',
                   onChanged: (value) {
-                    //TODO:CODE
+                    if(value.toString().trim().isEmpty){
+                      setState(() {
+                        searchText = null;
+                      });
+                    }else{
+                      searchText = value.toString().toLowerCase();
+                      List<Dish> filteredList = allDishes.where((dish) => dish.name.toLowerCase().contains(searchText)).toList();
+                      List<Widget> myList = [];
+                      for(var dish in filteredList){
+                        myList.add(
+                          DishCard(
+                            dish: dish,
+                            onPressed: (){
+                              openRestaurant(dish);
+                            },
+                          ),
+                        );
+                      }
+                      setState(() {
+                        dishesToDisplay = myList;
+                      });
+                    }
                   },
                   onPressed: (){
                     showFilterCard();

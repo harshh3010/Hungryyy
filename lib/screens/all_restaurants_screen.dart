@@ -16,7 +16,10 @@ class AllRestaurantsScreen extends StatefulWidget {
 
 class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
 
-  List<Widget> restaurantsToDisplay = [
+  String searchText;
+
+  List<Widget> restaurantsToDisplay = [];
+  List<Widget> restaurantsToDisplayAll = [
     Padding(
       padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
       child: CircularProgressIndicator(
@@ -31,7 +34,7 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
       myList.add(RestaurantCardBig(restaurant: restaurant));
     }
     setState(() {
-      restaurantsToDisplay = myList;
+      restaurantsToDisplayAll = myList;
     });
   }
 
@@ -55,6 +58,11 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(searchText == null){
+      restaurantsToDisplay = restaurantsToDisplayAll;
+    }
+
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(80.0),
@@ -106,7 +114,21 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
               child: SearchBox(
                 hint: 'Search Food',
                 onChanged: (value) {
-                  //TODO:CODE
+                  if(value.toString().trim().isEmpty){
+                    setState(() {
+                      searchText = null;
+                    });
+                  }else{
+                    searchText = value.toString().toLowerCase();
+                    List<Restaurant> filteredList = widget.restaurants.where((restaurant) => restaurant.name.toLowerCase().contains(searchText)).toList();
+                    List<Widget> myList = [];
+                    for(var restaurant in filteredList){
+                      myList.add(RestaurantCardBig(restaurant: restaurant));
+                    }
+                    setState(() {
+                      restaurantsToDisplay = myList;
+                    });
+                  }
                 },
                 onPressed: (){
                   showFilterCard();
