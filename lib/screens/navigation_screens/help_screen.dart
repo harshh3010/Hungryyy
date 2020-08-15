@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hungryyy/utilities/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpScreen extends StatefulWidget {
   @override
@@ -10,6 +11,16 @@ class HelpScreen extends StatefulWidget {
 }
 
 class _HelpScreenState extends State<HelpScreen> {
+
+  _launchURL() async {
+    const url = 'mailto:harsh.gyanchandani@gmail.com?subject=Hungryy App Help';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +37,45 @@ class _HelpScreenState extends State<HelpScreen> {
           title: Padding(
             padding: const EdgeInsets.only(top: 27),
             child: Text(
-              'Help & FAQs',
+              'Help',
               style: kHeadingStyle,
             ),
           ),
         ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            'This app has been developed by Harsh Gyanchandani ©2020',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'GT Eesti',
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Text(
+            'For any queries contact',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'GT Eesti',
+            ),
+          ),
+          GestureDetector(
+            onTap: _launchURL,
+            child: Text(
+              'harsh.gyanchandani@gmail.com',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'GT Eesti',
+                color: kColorRed,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

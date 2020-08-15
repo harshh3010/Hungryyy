@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:hungryyy/utilities/constants.dart';
 import 'package:hungryyy/utilities/user_api.dart';
 
 class PaytmPaymentScreen extends StatefulWidget {
@@ -88,9 +89,35 @@ class _PaytmPaymentScreenState extends State<PaytmPaymentScreen> {
 
     return new WebviewScaffold(
         url: Settings.apiUrl + queryParams,
-        appBar: new AppBar(
-          title: new Text("Pay using PayTM"),
-        ));
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              padding: EdgeInsets.all(10),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: kColorBlack,
+              ),
+            ),
+          ),
+          centerTitle: true,
+          title: Padding(
+            padding: const EdgeInsets.only(top: 27),
+            child: Text(
+              'HUNGRYYY',
+              style: kHeadingStyle,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

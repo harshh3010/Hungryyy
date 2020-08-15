@@ -3,6 +3,7 @@ import 'package:hungryyy/utilities/constants.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class AlertBox{
+
   static void showErrorBox(BuildContext context,String text){
     Alert(
       context: context,
@@ -86,4 +87,5 @@ class AlertBox{
       ],
     ).show();
   }
+
 }

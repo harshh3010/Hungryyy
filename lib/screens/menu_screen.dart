@@ -141,7 +141,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                             },
                                           ),
                                           DrawerItem(
-                                            label: 'Help & FAQs',
+                                            label: 'Help',
                                             icon: Icons.help_outline,
                                             onPressed: (){
                                               setState(() {

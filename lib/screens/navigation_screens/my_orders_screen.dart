@@ -66,7 +66,6 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
           });
           loadUserOrders();
           AlertBox.showSuccessBox(context, 'Order removed successfully', 'Success');
-          // TODO:Refresh List
         }else {
           setState(() {
             _loading = false;
