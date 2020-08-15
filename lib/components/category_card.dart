@@ -13,16 +13,16 @@ class CategoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        padding: EdgeInsets.all(30),
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        padding: const EdgeInsets.all(30),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         decoration: BoxDecoration(
           color: kColorYellow,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(const Radius.circular(10)),
           boxShadow: [
             BoxShadow(
-              color: kColorBlack.withOpacity(0.1),
+              color: kColorShadow,
               blurRadius: 3,
-              offset: Offset(0, 1),
+              offset: const Offset(0, 1),
             ),
           ],
         ),

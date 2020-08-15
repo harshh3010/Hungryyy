@@ -8,6 +8,7 @@ import 'package:hungryyy/model/restaurant.dart';
 import 'package:hungryyy/utilities/cart_api.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 import 'cart_screen.dart';
 
@@ -135,6 +136,15 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
       // Unable to establish connection
       AlertBox.showErrorBox(context,
           "Unable to establish connection with the servers.\nERROR CODE: ${response.statusCode}");
+    }
+  }
+
+  _launchURL() async {
+    String url = 'tel:+91 ${widget.restaurant.phoneNumber}';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 
@@ -338,12 +348,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
                         child: IconButton(
-                          onPressed: () {
-                            //TODO:CODE
-                          },
+                          onPressed: _launchURL,
                           padding: EdgeInsets.all(10),
                           icon: Icon(
-                            Icons.search,
+                            Icons.phone,
                           ),
                         ),
                       ),

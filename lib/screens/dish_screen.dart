@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/dish_card.dart';
+import 'package:hungryyy/components/filter_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/model/dish.dart';
 import 'package:hungryyy/model/restaurant.dart';
@@ -24,7 +25,17 @@ class DishScreen extends StatefulWidget {
 }
 
 class _DishScreenState extends State<DishScreen> {
-  List<Widget> dishesToDisplay = [
+
+  UserApi userApi = UserApi.instance;
+  String searchText;
+  bool _loading = false;
+  Map filterMap;
+  Widget filterAppliedBar;
+
+  List<Dish> allDishes = [];
+  List<Dish> filteredDishes = [];
+  List<Widget> dishesToDisplay = [];
+  List<Widget> dishesToDisplayAll = [
     Container(
       child: Center(
         child: Padding(
@@ -36,8 +47,6 @@ class _DishScreenState extends State<DishScreen> {
       ),
     ),
   ];
-  UserApi userApi = UserApi.instance;
-  bool _loading = false;
 
   Future<void> openRestaurant(Dish dish) async {
     setState(() {
@@ -76,7 +85,6 @@ class _DishScreenState extends State<DishScreen> {
         setState(() {
           _loading = false;
         });
-        //TODO:ADD DISH
         Navigator.push(context, MaterialPageRoute(builder: (context) => RestaurantScreen(restaurant: restaurant,specificDish: dish)));
       }
     }else{
@@ -89,6 +97,7 @@ class _DishScreenState extends State<DishScreen> {
   }
 
   Future<void> loadDishes() async {
+    allDishes = [];
     final http.Response response = await http.post(kLoadDishesUrl, body: {
       'city_name': widget.city,
       'state_name': widget.state,
@@ -102,7 +111,6 @@ class _DishScreenState extends State<DishScreen> {
       if (data.toString() == 'Error loading data') {
         AlertBox.showErrorBox(context, 'Unable to load data');
       } else {
-        List<Widget> myList = [];
         for (Map map in data) {
           Dish dish = Dish(
             id: map['id'],
@@ -122,27 +130,93 @@ class _DishScreenState extends State<DishScreen> {
             deliveryCharge: double.parse(map['delivery_charge']),
             restaurantName: map['restaurant_name'],
           );
-          myList.add(
-            DishCard(
-              dish: dish,
-              onPressed: (){
-                openRestaurant(dish);
-              },
-            ),
-          );
-          setState(() {
-            dishesToDisplay = myList;
-          });
+          print('unfiltered list');
+          allDishes.add(dish);
         }
-        setState(() {
-          dishesToDisplay = myList;
-        });
+        generateDisplayWidget(allDishes);
       }
     } else {
       // Error establishing connection with the server
       AlertBox.showErrorBox(context,
           'Unable to establish connection with the servers.\nERROR CODE: ${response.statusCode}');
     }
+  }
+
+  void generateDisplayWidget(List inputList){
+    List<Widget> myList = [];
+    for(var dish in inputList){
+      myList.add(
+        DishCard(
+          dish: dish,
+          onPressed: (){
+            openRestaurant(dish);
+          },
+        ),
+      );
+    }
+    setState(() {
+      dishesToDisplayAll = myList;
+    });
+  }
+
+  void showFilterCard() async {
+    filterMap = await showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enableDrag: true,
+        builder: (BuildContext buildContext){
+          return FilterCard();
+        });
+
+    print(filterMap);
+    if(filterMap != null){
+      filteredDishes = [];
+      for(var dish in allDishes){
+        if(applyFilter(filterMap,dish)){
+          filteredDishes.add(dish);
+        }
+      }
+      setState(() {
+        filteredDishes = filteredDishes;
+      });
+      generateDisplayWidget(filteredDishes);
+    }
+  }
+
+  bool applyFilter(Map filterMap,Dish dish){
+    bool pricingFilter,ratingFilter,freeDeliveryFilter,offerFilter;
+    switch(filterMap['pricing']){
+      case Pricing.low : pricingFilter = dish.price <= 200;
+      break;
+      case Pricing.mid : pricingFilter = dish.price <= 400;
+      break;
+      case Pricing.high : pricingFilter = dish.price > 400;
+      break;
+      default : pricingFilter = true;
+    }
+    switch(filterMap['rating']){
+      case Rating.low : ratingFilter = dish.rating <= 2;
+      break;
+      case Rating.mid : ratingFilter = dish.rating > 2 && dish.rating < 4;
+      break;
+      case Rating.high : ratingFilter = dish.rating > 4;
+      break;
+      default : ratingFilter = true;
+    }
+    if(filterMap['freeDelivery']){
+      freeDeliveryFilter = dish.deliveryCharge == 0;
+    }else{
+      freeDeliveryFilter = true;
+    }
+    if(filterMap['offer']){
+      offerFilter = dish.discount > 0;
+    }else{
+      offerFilter = true;
+    }
+
+    return (pricingFilter && ratingFilter && freeDeliveryFilter && offerFilter);
   }
 
   @override
@@ -153,6 +227,48 @@ class _DishScreenState extends State<DishScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(searchText == null){
+      dishesToDisplay = dishesToDisplayAll;
+    }
+    if(filteredDishes.isEmpty){
+      filteredDishes = allDishes;
+    }
+
+    if(filterMap != null){
+      filterAppliedBar = Positioned(
+        bottom: 0,
+        left: 0,
+        child: GestureDetector(
+            onTap: (){
+              setState(() {
+                filterMap = null;
+                generateDisplayWidget(allDishes);
+              });
+            },
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+            decoration: BoxDecoration(
+              color: kColorRed,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
+              ),
+            ),
+            child: Center(
+              child: Text(
+                'Filter applied. Tap to remove',
+                style: kLabelStyle.copyWith(color: Colors.white,fontSize: 18),
+              ),
+            ),
+          ),
+        ),
+      );
+    }else{
+      filterAppliedBar = Container();
+    }
+
     return ModalProgressHUD(
       inAsyncCall: _loading,
       color: Colors.white,
@@ -201,30 +317,60 @@ class _DishScreenState extends State<DishScreen> {
               ],
             ),
           ),
-          body: Column(
+          body: Stack(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
-                child: SearchBox(
-                  hint: 'Search Food',
-                  onChanged: (value) {
-                    //TODO:CODE
-                  },
-                ),
-              ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: loadDishes,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: dishesToDisplay,
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+                    child: SearchBox(
+                      hint: 'Search Food',
+                      onChanged: (value) {
+                        if(value.toString().trim().isEmpty){
+                          setState(() {
+                            searchText = null;
+                          });
+                        }else{
+                          searchText = value.toString().toLowerCase();
+                          List<Dish> filteredList = filteredDishes.where((dish) => dish.name.toLowerCase().contains(searchText)).toList();
+                          List<Widget> myList = [];
+                          for(var dish in filteredList){
+                            myList.add(
+                              DishCard(
+                                dish: dish,
+                                onPressed: (){
+                                  openRestaurant(dish);
+                                },
+                              ),
+                            );
+                          }
+                          setState(() {
+                            dishesToDisplay = myList;
+                          });
+                        }
+                      },
+                      onPressed: (){
+                        showFilterCard();
+                      },
                     ),
                   ),
-                ),
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: loadDishes,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: dishesToDisplay,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              filterAppliedBar,
             ],
-          )),
+          ),
+      ),
     );
   }
 }

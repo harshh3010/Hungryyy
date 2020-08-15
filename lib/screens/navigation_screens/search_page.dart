@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:hungryyy/components/alert_box.dart';
 import 'package:hungryyy/components/category_card.dart';
 import 'package:hungryyy/components/dish_card.dart';
+import 'package:hungryyy/components/filter_card.dart';
 import 'package:hungryyy/components/restaurant_card.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/components/showcase_card.dart';
@@ -30,8 +32,18 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
 
-  //TODO:LOAD CURRENT POSITION
-  List<Widget> categoriesToDisplay = [
+  UserApi userApi = UserApi.instance;
+  String searchText;
+  bool _loading = false;
+  bool displayCategories = true;
+  bool displayRestaurants = true;
+  bool displayMostPopular = true;
+
+  List<Category> allCategories = [];
+  List<Restaurant> allRestaurants = [];
+
+  List<Widget> categoriesToDisplay;
+  List<Widget> categoriesToDisplayAll = [
     Padding(
       padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
       child: CircularProgressIndicator(
@@ -39,6 +51,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
     ),
   ];
+
   List<Widget> restaurantsToDisplay = [
     Padding(
       padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
@@ -47,18 +60,13 @@ class _SearchPageState extends State<SearchPage> {
       ),
     ),
   ];
-  List<Restaurant> allRestaurants = [];
-  bool displayCategories = true;
-  bool displayRestaurants = true;
-  bool displayMostPopular = true;
+
   Widget mostPopularDish = Padding(
     padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
     child: CircularProgressIndicator(
       strokeWidth: 4,
     ),
   );
-  UserApi userApi = UserApi.instance;
-  bool _loading = false;
 
   Future<void> openRestaurant(Dish dish) async {
     setState(() {
@@ -97,7 +105,6 @@ class _SearchPageState extends State<SearchPage> {
         setState(() {
           _loading = false;
         });
-        //TODO:ADD DISH
         Navigator.push(context, MaterialPageRoute(builder: (context) => RestaurantScreen(restaurant: restaurant,specificDish: dish)));
       }
     }else{
@@ -166,6 +173,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> loadRestaurants() async {
+    allRestaurants = [];
     final http.Response response = await http.post(kLoadRestaurantsUrl,body: {
       'city_name': userApi.cityName,
       'state_name' : userApi.stateName,
@@ -234,6 +242,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> loadCategories() async {
+    allCategories = [];
     final http.Response response = await http.post(kLoadCategoriesUrl,body: {
       'city_name': userApi.cityName,
       'state_name' : userApi.stateName,
@@ -255,23 +264,26 @@ class _SearchPageState extends State<SearchPage> {
             id: map['category_id'],
           );
           if(category.id != 'category_other'){
-            myList.add(
-              CategoryCard(
-                category: category,
-                onPressed: (){
-                  Navigator.push(context,MaterialPageRoute(
-                    builder: (context) => DishScreen(
-                      city: userApi.cityName,
-                      state: userApi.stateName,
-                      country: userApi.countryName,
-                      categoryId: category.id,
-                      popular: 'NO',
-                    ),
-                  ));
-                },
-              ),
-            );
+            allCategories.add(category);
           }
+        }
+        for(var category in allCategories){
+          myList.add(
+            CategoryCard(
+              category: category,
+              onPressed: (){
+                Navigator.push(context,MaterialPageRoute(
+                  builder: (context) => DishScreen(
+                    city: userApi.cityName,
+                    state: userApi.stateName,
+                    country: userApi.countryName,
+                    categoryId: category.id,
+                    popular: 'NO',
+                  ),
+                ));
+              },
+            ),
+          );
         }
         if(myList.isEmpty){
           setState(() {
@@ -280,7 +292,7 @@ class _SearchPageState extends State<SearchPage> {
         }else{
           setState(() {
             displayCategories = true;
-            categoriesToDisplay = myList;
+            categoriesToDisplayAll = myList;
           });
         }
       }
@@ -305,8 +317,25 @@ class _SearchPageState extends State<SearchPage> {
     loadData();
   }
 
+  void showFilterCard(){
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enableDrag: true,
+        builder: (BuildContext buildContext){
+          return FilterCard();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    if(searchText == null){
+      categoriesToDisplay = categoriesToDisplayAll;
+    }
+
     return ModalProgressHUD(
       inAsyncCall: _loading,
       color: Colors.white,
@@ -410,9 +439,41 @@ class _SearchPageState extends State<SearchPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
                   child: SearchBox(
-                    hint: 'Search Food',
+                    hint: 'Search Categories',
                     onChanged: (value) {
-                      //TODO:CODE
+                      if(value.toString().trim().isEmpty){
+                        setState(() {
+                          searchText = null;
+                        });
+                      }else{
+                        searchText = value.toString().toLowerCase();
+                        List<Category> filteredList = allCategories.where((category) => category.name.toLowerCase().contains(searchText)).toList();
+                        List<Widget> myList = [];
+                        for(var category in filteredList){
+                          myList.add(
+                            CategoryCard(
+                              category: category,
+                              onPressed: (){
+                                Navigator.push(context,MaterialPageRoute(
+                                  builder: (context) => DishScreen(
+                                    city: userApi.cityName,
+                                    state: userApi.stateName,
+                                    country: userApi.countryName,
+                                    categoryId: category.id,
+                                    popular: 'NO',
+                                  ),
+                                ));
+                              },
+                            ),
+                          );
+                        }
+                        setState(() {
+                          categoriesToDisplay = myList;
+                        });
+                      }
+                    },
+                    onPressed: (){
+                      showFilterCard();
                     },
                   ),
                 ),
@@ -425,7 +486,6 @@ class _SearchPageState extends State<SearchPage> {
                         ShowcaseCard(
                           label: 'Categories',
                           viewAll: () {
-                            //TODO:UPDATE CURRENT LOCATION
                             Navigator.push(context,MaterialPageRoute(
                                 builder: (context) => DishScreen(
                                   city: userApi.cityName,

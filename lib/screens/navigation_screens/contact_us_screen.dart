@@ -32,6 +32,38 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           ),
         ),
       ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 30),
+            child: TextField(
+              maxLines: null,
+              decoration: InputDecoration(
+                hintText: 'Enter your message here',
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(30),
+            child: MaterialButton(
+              onPressed: (){
+                //TODO:CODE
+              },
+              padding: EdgeInsets.all(25),
+              color: kColorYellow,
+              child: Text(
+                'Send  >',
+                style: TextStyle(
+                  fontFamily: 'GT Eesti',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

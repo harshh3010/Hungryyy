@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hungryyy/components/filter_card.dart';
 import 'package:hungryyy/components/restaurant_card_big.dart';
 import 'package:hungryyy/components/search_box.dart';
 import 'package:hungryyy/model/restaurant.dart';
+import 'package:hungryyy/screens/cart_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 
 class AllRestaurantsScreen extends StatefulWidget {
@@ -14,7 +16,13 @@ class AllRestaurantsScreen extends StatefulWidget {
 
 class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
 
-  List<Widget> restaurantsToDisplay = [
+  String searchText;
+  Map filterMap;
+  Widget filterAppliedBar;
+
+  List<Restaurant> filteredRestaurants = [];
+  List<Widget> restaurantsToDisplay = [];
+  List<Widget> restaurantsToDisplayAll = [
     Padding(
       padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 50),
       child: CircularProgressIndicator(
@@ -24,12 +32,16 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
   ];
 
   void loadRestaurants(){
+    generateDisplayWidget(widget.restaurants);
+  }
+
+  void generateDisplayWidget(List inputList){
     List<Widget> myList = [];
-    for(var restaurant in widget.restaurants){
+    for(var restaurant in inputList){
       myList.add(RestaurantCardBig(restaurant: restaurant));
     }
     setState(() {
-      restaurantsToDisplay = myList;
+      restaurantsToDisplayAll = myList;
     });
   }
 
@@ -39,8 +51,98 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
     loadRestaurants();
   }
 
+  void showFilterCard() async {
+   filterMap = await showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        enableDrag: true,
+        builder: (BuildContext buildContext){
+          return FilterCard();
+        });
+
+    print(filterMap);
+    if(filterMap != null){
+      filteredRestaurants = [];
+      for(var restaurant in widget.restaurants){
+        if(applyFilter(filterMap,restaurant)){
+          filteredRestaurants.add(restaurant);
+        }
+      }
+      setState(() {
+        filteredRestaurants = filteredRestaurants;
+      });
+      generateDisplayWidget(filteredRestaurants);
+    }
+  }
+
+  bool applyFilter(Map filterMap,Restaurant restaurant) {
+    bool pricingFilter,ratingFilter,freeDeliveryFilter,offerFilter;
+    pricingFilter = true;
+    switch(filterMap['rating']){
+      case Rating.low : ratingFilter = restaurant.rating <= 2;
+      break;
+      case Rating.mid : ratingFilter = restaurant.rating > 2 && restaurant.rating < 4;
+      break;
+      case Rating.high : ratingFilter = restaurant.rating > 4;
+      break;
+      default : ratingFilter = true;
+    }
+    if(filterMap['freeDelivery']){
+      freeDeliveryFilter = restaurant.deliveryCharge == 0;
+    }else{
+      freeDeliveryFilter = true;
+    }
+    offerFilter = true;
+
+    return (pricingFilter && ratingFilter && freeDeliveryFilter && offerFilter);
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    if(searchText == null){
+      restaurantsToDisplay = restaurantsToDisplayAll;
+    }
+    if(filteredRestaurants.isEmpty){
+      filteredRestaurants = widget.restaurants;
+    }
+
+    if(filterMap != null){
+      filterAppliedBar = Positioned(
+        bottom: 0,
+        left: 0,
+        child: GestureDetector(
+          onTap: (){
+            setState(() {
+              filterMap = null;
+              generateDisplayWidget(widget.restaurants);
+            });
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+            decoration: BoxDecoration(
+              color: kColorRed,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
+              ),
+            ),
+            child: Center(
+              child: Text(
+                'Filter applied. Tap to remove',
+                style: kLabelStyle.copyWith(color: Colors.white,fontSize: 18),
+              ),
+            ),
+          ),
+        ),
+      );
+    }else{
+      filterAppliedBar = Container();
+    }
+
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(80.0),
@@ -73,7 +175,7 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
                 padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
                 child: IconButton(
                   onPressed: () {
-                    //TODO:CODE
+                    Navigator.pushNamed(context,CartScreen.id);
                   },
                   padding: EdgeInsets.all(10),
                   icon: Icon(
@@ -85,26 +187,49 @@ class _AllRestaurantsScreenState extends State<AllRestaurantsScreen> {
             ],
           ),
         ),
-        body: Column(
+        body: Stack(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
-              child: SearchBox(
-                hint: 'Search Food',
-                onChanged: (value) {
-                  //TODO:CODE
-                },
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: restaurantsToDisplay,
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+                  child: SearchBox(
+                    hint: 'Search Food',
+                    onChanged: (value) {
+                      if(value.toString().trim().isEmpty){
+                        setState(() {
+                          searchText = null;
+                        });
+                      }else{
+                        searchText = value.toString().toLowerCase();
+                        List<Restaurant> filteredList = filteredRestaurants.where((restaurant) => restaurant.name.toLowerCase().contains(searchText)).toList();
+                        List<Widget> myList = [];
+                        for(var restaurant in filteredList){
+                          myList.add(RestaurantCardBig(restaurant: restaurant));
+                        }
+                        setState(() {
+                          restaurantsToDisplay = myList;
+                        });
+                      }
+                    },
+                    onPressed: (){
+                      showFilterCard();
+                    },
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: restaurantsToDisplay,
+                    ),
+                  ),
+                ),
+              ],
             ),
+            filterAppliedBar,
           ],
-        ));
+        ) ,
+    );
   }
 }
