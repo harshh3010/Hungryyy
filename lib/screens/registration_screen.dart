@@ -38,11 +38,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         AlertBox.showErrorBox(context, 'This email is already in use.');
       }else if(data.toString() == "User registered"){
         // Successful registration
-        LocalStorage.saveLoginInfo(
-          statusCode: 'YES',
-          email: email.text,
-        );
-        Navigator.pushReplacementNamed(context, DetailsScreen.id);
+
+        await AlertBox.showSuccessBox(context, 'Your account has been registered. Please verify your email address to continue.', 'Registration Successful');
+        Navigator.pushReplacementNamed(context, LoginScreen.id);
+
       }
     }else{
       // Connection failed
