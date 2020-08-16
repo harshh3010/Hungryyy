@@ -25,6 +25,8 @@ const String kRemoveOrderUrl = "$kHostUrl/remove_order.php";
 const String kUpdateAddressUrl = "$kHostUrl/update_address.php";
 const String kHostDeliveryLocationUrl = "$kHostUrl/host_delivery_location.php";
 const String kReceiveDeliveryLocationUrl = "$kHostUrl/receive_delivery_location.php";
+const String kSendOtpUrl = "$kHostUrl/sendsms.php";
+const String kVerifyOtpUrl = "$kHostUrl/verify_otp.php";
 
 const TextStyle kHeadingStyle = TextStyle(
   fontFamily: 'GT Eesti',

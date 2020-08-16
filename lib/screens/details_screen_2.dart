@@ -52,6 +52,7 @@ class _DetailsScreen2State extends State<DetailsScreen2> {
       var data = jsonDecode(response.body.toString());
       if(data.toString() == "SUCCESS"){
         // DATA STORED SUCCESSFULLY
+        userApi.email = userEmail;
         userApi.name = widget.name;
         userApi.phoneNumber = int.parse(widget.phoneNumber);
         userApi.houseName = houseName;
