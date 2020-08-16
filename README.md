@@ -7,9 +7,9 @@ A food delivery app for android and ios created using flutter.
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/LoginScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/RegistrationScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/PhoneVerification.png" width="300px">
-<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/SplashScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/HomeScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/DishScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/FilterSheet.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/FilteredDishes.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/SearchFilter.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/AllRestaurantsScreen.png" width="300px">
