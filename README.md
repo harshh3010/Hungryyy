@@ -1,16 +1,22 @@
-# hungryyy
+# Hungryyy-Flutter
 
-A new Flutter application.
+A food delivery app for android and ios created using flutter.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## App Mock-ups
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/SplashScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/LoginScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/RegistrationScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/PhoneVerification.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/SplashScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/HomeScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/DishScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/FilteredDishes.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/SearchFilter.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/AllRestaurantsScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/RestaurantScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/CartScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/BillingScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/PayTMScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/OrdersScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/MapScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/AddressScreen.png" width="300px">
