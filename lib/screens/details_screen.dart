@@ -167,7 +167,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               setState(() {
                                 _loading = true;
                               });
-                              if(name.text != null && phoneNumber.text != null && name.text != "" && phoneNumber.text != null){
+                              if(name.text != null && phoneNumber.text != null && name.text != "" && phoneNumber.text != ""){
                                 sendOTP();
                               }else{
                                 AlertBox.showErrorBox(context, 'Please fill up the required fields');
