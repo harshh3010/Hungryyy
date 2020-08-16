@@ -186,6 +186,18 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                 style: kHeadingStyle,
               ),
             ),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
+                child: IconButton(
+                  onPressed: loadUserOrders,
+                  padding: EdgeInsets.all(10),
+                  icon: Icon(
+                    Icons.refresh,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         body: RefreshIndicator(

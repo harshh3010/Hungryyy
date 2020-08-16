@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Hungryyy App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: kColorYellow,

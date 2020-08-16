@@ -265,7 +265,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> with TickerProvider
                             image: NetworkImage(widget.restaurant.imageUrl),
                             fit: BoxFit.cover,
                             colorFilter: ColorFilter.mode(
-                                kColorBlack.withOpacity(0.3), BlendMode.srcATop),
+                                kColorBlack.withOpacity(0.4), BlendMode.srcATop),
                           ),
                           borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(50),

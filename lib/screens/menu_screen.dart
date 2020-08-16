@@ -132,11 +132,20 @@ class _MenuScreenState extends State<MenuScreen> {
                                             },
                                           ),
                                           DrawerItem(
+                                            label: 'Update Contact',
+                                            icon: Icons.phone,
+                                            onPressed: (){
+                                              setState(() {
+                                                _currentPageIndex = 3;
+                                              });
+                                            },
+                                          ),
+                                          DrawerItem(
                                             label: 'Contact Us',
                                             icon: Icons.chat_bubble_outline,
                                             onPressed: (){
                                               setState(() {
-                                                _currentPageIndex = 3;
+                                                _currentPageIndex = 4;
                                               });
                                             },
                                           ),
@@ -145,7 +154,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                             icon: Icons.help_outline,
                                             onPressed: (){
                                               setState(() {
-                                                _currentPageIndex = 4;
+                                                _currentPageIndex = 5;
                                               });
                                             },
                                           ),

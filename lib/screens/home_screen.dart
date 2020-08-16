@@ -4,6 +4,7 @@ import 'package:hungryyy/screens/navigation_screens/contact_us_screen.dart';
 import 'package:hungryyy/screens/navigation_screens/help_screen.dart';
 import 'package:hungryyy/screens/navigation_screens/my_orders_screen.dart';
 import 'package:hungryyy/screens/navigation_screens/search_page.dart';
+import 'package:hungryyy/screens/navigation_screens/update_contact_screen.dart';
 import 'package:hungryyy/utilities/constants.dart';
 import 'navigation_screens/my_address_screen.dart';
 
@@ -78,6 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
         onAddressChange: (){
           HomeScreen(currentIndex: widget.currentIndex).createState();
         },
+      ),
+      UpdateContactScreen(
+        iconButton: iconButton,
       ),
       ContactUsScreen(
         iconButton: iconButton,
