@@ -95,9 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
           email: email.text,
         );
         await checkUserDetails();
-      }else if(message == 'Login Failed'){
+      }else if(message == 'Invalid Credentials'){
         // EMAIL OR PASSWORD DID NOT MATCH
         AlertBox.showErrorBox(context, 'Invalid email or password.');
+      }else if(message == 'Not Verified'){
+        // EMAIL OR PASSWORD DID NOT MATCH
+        AlertBox.showErrorBox(context, 'Please verify your email address first');
       }
     }else{
       // Error connecting to the server
