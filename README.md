@@ -7,6 +7,7 @@ A food delivery app for android and ios created using flutter.
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/LoginScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/RegistrationScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/PhoneVerification.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/NavigationScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/HomeScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/DishScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/FilterSheet.png" width="300px">
