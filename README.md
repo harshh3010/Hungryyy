@@ -13,7 +13,7 @@ Tasks like email and mobile number verification are achieved using php. Xampp al
 Speaking of phone verification, I achieved it by sending an OTP to the registered users using TextLocal's SMS services.
 <br>
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/nodejs-logo.png" width="250px">
-This project also uses Node.js for creating a gateway to allow the user's to make payments using PayTM. 
+This project also uses Node.js for creating a gateway to allow the users to make payments using PayTM. 
 
 
 ## App Mock-ups
