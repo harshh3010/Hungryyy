@@ -4,7 +4,7 @@ A food delivery app for android and ios created using flutter.
 
 ## Tech Stack
 
-<img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/flutter-logo.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/flutter-logo.png" width="300px"><img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/dart-logo.png" width="300px">
 
 This app is created using flutter (dart). The UI and main functioning of the app is achieved through dart. This app uses MySQL database for storing the necessary data. The server provider is Apache deployed with PHP scripts for handling specific tasks. For this application, I created a localhost server using Xampp.
 
