@@ -6,8 +6,8 @@ A food delivery app for android and ios created using flutter.
 
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/flutter-logo.png" width="250px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/dart-logo.png" width="250px">
-<br>
 This app is created using flutter (dart). The UI and main functioning of the app is achieved through dart. This app uses MySQL database for storing the necessary data. The server provider is Apache deployed with PHP scripts for handling specific tasks.
+<br>
 <br>
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/mysql-logo.png" width="250px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/php-logo.png" width="250px">
@@ -22,6 +22,17 @@ Speaking of phone verification, I achieved it by sending an OTP to the registere
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/textlocal-logo.png" width="150px"><img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/nodejs-logo.png" width="150px"><img src="https://github.com/harshh3010/Hungryyy/blob/master/TechStack/paytm-logo.png" width="150px">
 This project also uses Node.js for creating a gateway to allow the users to make payments using PayTM. 
 
+## Flutter Packages used
+1. **http**: To make http requests to the server
+2. **rflutter_alert**: To show custom alert dialog boxes
+3. **modal_progress_hud**: To display progress indicators while data is being fetched
+4. **geolocator & geocoder**: To get user's location and convert the latitude and longitude obtained to address placemark
+5. **image_picker**: To pick up an image from the gallery
+6. **intl**: For formatting the DateTime values chosen while booking a product
+7. **google_maps_flutter**: To allow the users to track their order on a map
+8. **flutter_polyline_points**: To draw routes between source and destination points on a map (Works only when billing is enabled)
+9. **flutter_webview_plugin**: To display a webview in our app.(Used in paytm payment screen)
+10. **url_launcher**: To launch the default dialer and mailing app on user's device
 
 ## App Mock-ups
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/SplashScreen.png">
