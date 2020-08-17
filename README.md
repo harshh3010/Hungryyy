@@ -15,7 +15,7 @@ This project also uses Node.js for creating a gateway to allow the user's to mak
 
 
 ## App Mock-ups
-<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/SplashScreen.png" width="300px">
+<img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/SplashScreen.png">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/LoginScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/RegistrationScreen.png" width="300px">
 <img src="https://github.com/harshh3010/Hungryyy/blob/master/AppScreenshots/PhoneVerification.png" width="300px">
